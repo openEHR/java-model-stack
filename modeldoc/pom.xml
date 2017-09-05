@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>java-model-stack</artifactId>
+        <groupId>org.openehr</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>modeldoc</artifactId>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>A Basic Metamodel (BMM) object model for Java</description>
+    <url>https://github.com/cnanjo/adl-tools</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Claude Nanjo</name>
+            <email>cnanjo@tbd.com</email>
+            <organization>mwangaza.guru</organization>
+            <organizationUrl>https://github.com/cnanjo/adl-tools</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:cnanjo/adl-tools.git</connection>
+        <developerConnection>scm:git:git@github.com:cnanjo/adl-tools.git</developerConnection>
+        <url>git@github.com:cnanjo/adl-tools.git</url>
+    </scm>
+
+    <properties>
+        <spock.version>1.0-groovy-2.4</spock.version>
+        <groovy.version>2.4.3</groovy.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openehr</groupId>
+            <artifactId>openehr-bmm</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openehr</groupId>
+            <artifactId>adl-common-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- test -->
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>${spock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-test</artifactId>
+            <version>${groovy.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.25-incubating</version>
+        </dependency>
+
+
+
+    </dependencies>
+
+
+</project>
