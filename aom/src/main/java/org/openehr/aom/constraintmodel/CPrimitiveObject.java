@@ -19,7 +19,7 @@ public abstract class CPrimitiveObject<T> extends CDefinedObject<T> {
      */
     private Boolean isEnumeratedTypeConstraint;
     /**
-     * Constraint represented by this object; redefine in descendants.
+     * Constraints represented by this object; redefine in descendants.
      */
     private List<T> constraints;
 
@@ -47,7 +47,7 @@ public abstract class CPrimitiveObject<T> extends CDefinedObject<T> {
      *
      * @return
      */
-    public Boolean getEnumeratedTypeConstraint() {
+    public Boolean getIsEnumeratedTypeConstraint() {
         return isEnumeratedTypeConstraint;
     }
 

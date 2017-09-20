@@ -50,7 +50,7 @@ public class CInteger extends COrdered<Integer> {
      * @return
      */
     @Override
-    public Interval<Integer> generatePrototypeValue() {
+    public Interval<Integer> prototypeValue() {
         Interval<Integer> interval = new Interval<>();
         interval.setLower(0);
         interval.setUpper(1);
@@ -60,13 +60,13 @@ public class CInteger extends COrdered<Integer> {
     /**
      * True if constraints represented by this node, ignoring any sub-parts,
      * are narrower or the same as other. Typically used during validation of
-     * special-ised archetype nodes.
+     * specialized archetype nodes.
      *
      * @param other
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(ArchetypeConstraint other) {
+    public Boolean cConformsTo(ArchetypeConstraint other) {
         return null;
     }
 
@@ -80,7 +80,7 @@ public class CInteger extends COrdered<Integer> {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(ArchetypeConstraint other) {
+    public Boolean cCongruentTo(ArchetypeConstraint other) {
         return null;
     }
 

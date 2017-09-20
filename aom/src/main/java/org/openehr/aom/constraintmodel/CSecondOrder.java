@@ -38,7 +38,7 @@ public abstract class CSecondOrder<T extends ArchetypeConstraint> {
      * @param other
      * @return
      */
-    public abstract Boolean constraintConformsTo(CSecondOrder other);
+    public abstract Boolean cConformsTo(CSecondOrder other);
 
     /**
      * True if constraints represented by this node contain no further redefinitions with respect to the node
@@ -47,5 +47,5 @@ public abstract class CSecondOrder<T extends ArchetypeConstraint> {
      * @param other
      * @return
      */
-    public abstract Boolean constraintCongruentTo(CSecondOrder other);
+    public abstract Boolean cCongruentTo(CSecondOrder other);
 }

@@ -69,7 +69,7 @@ public class ArchetypeSlot extends CObject {
      *
      * @return
      */
-    public Boolean isClosed() {
+    public Boolean getIsClosed() {
         return isClosed;
     }
 
@@ -80,7 +80,7 @@ public class ArchetypeSlot extends CObject {
      *
      * @param closed
      */
-    public void setClosed(Boolean closed) {
+    public void setIsClosed(Boolean closed) {
         isClosed = closed;
     }
 
@@ -95,13 +95,13 @@ public class ArchetypeSlot extends CObject {
     /**
      * True if constraints represented by this node, ignoring any sub-parts,
      * are narrower or the same as other. Typically used during validation of
-     * special-ised archetype nodes.
+     * specialized archetype nodes.
      *
      * @param other
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(ArchetypeConstraint other) {
+    public Boolean cConformsTo(ArchetypeConstraint other) {
         return null;
     }
 
@@ -115,7 +115,7 @@ public class ArchetypeSlot extends CObject {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(ArchetypeConstraint other) {
+    public Boolean cCongruentTo(ArchetypeConstraint other) {
         return null;
     }
 

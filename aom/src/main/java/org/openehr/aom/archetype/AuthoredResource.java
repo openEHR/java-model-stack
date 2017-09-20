@@ -41,7 +41,7 @@ public interface AuthoredResource {
      *
      * @return True if this resource is under any kind of change control
      */
-    public Boolean getControlled();
+    public Boolean getIsControlled();
 
     /**
      * Set to True if this resource is under any kind of change control (even file copying),
@@ -49,7 +49,7 @@ public interface AuthoredResource {
      *
      * @param controlled True if this resource is under any kind of change control
      */
-    public void setControlled(Boolean controlled);
+    public void setIsControlled(Boolean controlled);
 
     /**
      * Returns the unique identifier of the family of archetypes having the same interface identifier (same major version).
@@ -130,18 +130,13 @@ public interface AuthoredResource {
      *
      * @return Most recent revision in revision_history if is_controlled else (uncontrolled) .
      */
-    public String getCurrentRevision();
+    public String currentRevision();
 
-    /**
-     * Sets the most recent revision in revision_history if is_controlled else (uncontrolled) .
-     * @param revision Most recent revision in revision_history if is_controlled else (uncontrolled) .
-     */
-    public void setCurrentRevision(String revision);
 
     /**
      * Total list of languages available in this resource, derived from original_language and translations.
      *
      * @return
      */
-    public List<String> getAvailableLanguages();
+    public List<String> availableLanguages();
 }

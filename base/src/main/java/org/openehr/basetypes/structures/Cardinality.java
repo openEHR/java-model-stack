@@ -70,7 +70,7 @@ public class Cardinality {
      *
      * @return
      */
-    public Boolean getOrdered() {
+    public Boolean getIsOrdered() {
         return isOrdered;
     }
 
@@ -79,7 +79,7 @@ public class Cardinality {
      *
      * @param ordered
      */
-    public void setOrdered(Boolean ordered) {
+    public void setIsOrdered(Boolean ordered) {
         isOrdered = ordered;
     }
 
@@ -88,7 +88,7 @@ public class Cardinality {
      *
      * @return
      */
-    public Boolean getUnique() {
+    public Boolean getIsUnique() {
         return isUnique;
     }
 
@@ -97,7 +97,7 @@ public class Cardinality {
      *
      * @param unique
      */
-    public void setUnique(Boolean unique) {
+    public void setIsUnique(Boolean unique) {
         isUnique = unique;
     }
 

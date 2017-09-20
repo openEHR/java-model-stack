@@ -290,7 +290,7 @@ public class AdlVisitorImpl<T> extends adlBaseVisitor<T> implements adlVisitor<T
 	@Override public T visitMeta_data_tag_is_controlled(adlParser.Meta_data_tag_is_controlledContext ctx) {
 		String isControlled = ctx.getText();
 		if(isControlled != null && isControlled.equalsIgnoreCase("is_controlled")) {
-			((AuthoredArchetype) getStack().peek()).setControlled(true);
+			((AuthoredArchetype) getStack().peek()).setIsControlled(true);
 		}
 		return visitChildren(ctx);
 	}
@@ -303,7 +303,7 @@ public class AdlVisitorImpl<T> extends adlBaseVisitor<T> implements adlVisitor<T
 	@Override public T visitMeta_data_tag_is_generated(adlParser.Meta_data_tag_is_generatedContext ctx) {
 		String isGenerated = ctx.getText();
 		if(isGenerated != null && isGenerated.equalsIgnoreCase("is_generated")) {
-			((AuthoredArchetype) getStack().peek()).setGenerated(true);
+			((AuthoredArchetype) getStack().peek()).setIsGenerated(true);
 		}
 		return visitChildren(ctx);
 	}

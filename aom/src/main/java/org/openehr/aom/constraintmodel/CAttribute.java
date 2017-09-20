@@ -152,7 +152,7 @@ public class CAttribute extends ArchetypeConstraint<CAttribute> {
      * Returns flag indicating whether this attribute constraint is on a container (i.e. multiply-valued) attribute.
      * @return
      */
-    public Boolean getMultiple() {
+    public Boolean getIsMultiple() {
         return isMultiple;
     }
 
@@ -160,7 +160,7 @@ public class CAttribute extends ArchetypeConstraint<CAttribute> {
      * Sets flag indicating whether this attribute constraint is on a container (i.e. multiply-valued) attribute.
      * @param multiple
      */
-    public void setMultiple(Boolean multiple) {
+    public void setIsMultiple(Boolean multiple) {
         isMultiple = multiple;
     }
 
@@ -182,7 +182,7 @@ public class CAttribute extends ArchetypeConstraint<CAttribute> {
      *
      * @return
      */
-    public String getRmAttributePath() {
+    public String rmAttributePath() {
         throw new NotImplementedException();//TODO Need to implement
     }
 
@@ -205,7 +205,7 @@ public class CAttribute extends ArchetypeConstraint<CAttribute> {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(CAttribute other) {
+    public Boolean cCongruentTo(CAttribute other) {
         //True if this node on its own (ignoring any subparts) expresses no additional constraints than `other'.
         if(other == null) {
             return false;
@@ -223,7 +223,7 @@ public class CAttribute extends ArchetypeConstraint<CAttribute> {
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(CAttribute other) {
+    public Boolean cConformsTo(CAttribute other) {
         //True if this node on its own (ignoring any subparts) expresses the same or narrower constraints as `other'.
         // Returns False if any of the following is incompatible:
         //	 * cardinality
@@ -257,5 +257,16 @@ public class CAttribute extends ArchetypeConstraint<CAttribute> {
         } else {
             return true;
         }
+    }
+
+    /**
+     * Post: Result = existence /= Void
+     * and then existence.is_prohibited
+     * True if this C_ATTRIBUTE has an existence
+     * constraint of 0..0, i.e. prohibition.
+     * <EOF>
+     */
+    public Boolean isProhibited() {
+        throw new NotImplementedException();
     }
 }

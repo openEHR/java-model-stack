@@ -43,7 +43,7 @@ public class CAttributeTuple extends CSecondOrder<CAttribute> {
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(CSecondOrder other) {
+    public Boolean cConformsTo(CSecondOrder other) {
         throw new NotImplementedException();//TODO Need to implement
     }
 
@@ -55,7 +55,7 @@ public class CAttributeTuple extends CSecondOrder<CAttribute> {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(CSecondOrder other) {
+    public Boolean cCongruentTo(CSecondOrder other) {
         throw new NotImplementedException();//TODO Need to implement
     }
 }

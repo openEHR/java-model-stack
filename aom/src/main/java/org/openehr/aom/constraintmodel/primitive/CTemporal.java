@@ -34,18 +34,18 @@ public abstract class CTemporal<T extends Comparable> extends COrdered<T> {
      * True if 'a_pattern' is a valid constraint.
      * Define in concrete descendants.
      *
-     * @param pattern
+     * @param aPattern
      * @return
      */
-    public abstract Boolean validPatternConstraint(String pattern);
+    public abstract Boolean validPatternConstraint(String aPattern);
 
     /**
      * Return True if 'a_pattern' can be replaced by 'an_other_pattern' in a specialised constraint.
      * Define in concrete subtypes.
      *
-     * @param pattern
-     * @param otherPattern
+     * @param aPattern
+     * @param anOtherPattern
      * @return
      */
-    public abstract Boolean validPatternConstraintReplacement(String pattern, String otherPattern);
+    public abstract Boolean validPatternConstraintReplacement(String aPattern, String anOtherPattern);
 }

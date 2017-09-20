@@ -119,7 +119,7 @@ public class AuthoredArchetype extends BaseArchetype implements AuthoredResource
      * @return True if this resource is under any kind of change control
      */
     @Override
-    public Boolean getControlled() {
+    public Boolean getIsControlled() {
         return this.isControlled;
     }
 
@@ -130,7 +130,7 @@ public class AuthoredArchetype extends BaseArchetype implements AuthoredResource
      * @param controlled True if this resource is under any kind of change control
      */
     @Override
-    public void setControlled(Boolean controlled) {
+    public void setIsControlled(Boolean controlled) {
         this.isControlled = controlled;
     }
 
@@ -240,19 +240,10 @@ public class AuthoredArchetype extends BaseArchetype implements AuthoredResource
      * @return Most recent revision in revision_history if is_controlled else (uncontrolled) .
      */
     @Override
-    public String getCurrentRevision() {
+    public String currentRevision() {
         throw new NotImplementedException();//TODO Need to implement
     }
 
-    /**
-     * Sets the most recent revision in revision_history if is_controlled else (uncontrolled) .
-     *
-     * @param revision Most recent revision in revision_history if is_controlled else (uncontrolled) .
-     */
-    @Override
-    public void setCurrentRevision(String revision) {
-        throw new NotImplementedException();//TODO Need to implement
-    }
 
     /**
      * Total list of languages available in this resource, derived from original_language and translations.
@@ -260,8 +251,8 @@ public class AuthoredArchetype extends BaseArchetype implements AuthoredResource
      * @return
      */
     @Override
-    public List<String> getAvailableLanguages() {
-        throw new NotImplementedException();//TODO Need to implement
+    public List<String> availableLanguages() {
+		throw new NotImplementedException();//TODO Need to implement
     }
 
     /**
@@ -336,7 +327,7 @@ public class AuthoredArchetype extends BaseArchetype implements AuthoredResource
      *
      * @return
      */
-    public Boolean getGenerated() {
+    public Boolean getIsGenerated() {
         return isGenerated;
     }
 
@@ -348,7 +339,7 @@ public class AuthoredArchetype extends BaseArchetype implements AuthoredResource
      *
      * @param generated
      */
-    public void setGenerated(Boolean generated) {
+    public void setIsGenerated(Boolean generated) {
         isGenerated = generated;
     }
 

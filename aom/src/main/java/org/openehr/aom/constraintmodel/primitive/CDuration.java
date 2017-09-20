@@ -67,20 +67,20 @@ public class CDuration extends CTemporal<Duration> {
      * @return
      */
     @Override
-    public Interval<Duration> generatePrototypeValue() {
+    public Interval<Duration> prototypeValue() {
         return null;
     }
 
     /**
      * True if constraints represented by this node, ignoring any sub-parts,
      * are narrower or the same as other. Typically used during validation of
-     * special-ised archetype nodes.
+     * specialized archetype nodes.
      *
      * @param other
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(ArchetypeConstraint other) {
+    public Boolean cConformsTo(ArchetypeConstraint other) {
         return null;
     }
 
@@ -94,7 +94,7 @@ public class CDuration extends CTemporal<Duration> {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(ArchetypeConstraint other) {
+    public Boolean cCongruentTo(ArchetypeConstraint other) {
         return null;
     }
 

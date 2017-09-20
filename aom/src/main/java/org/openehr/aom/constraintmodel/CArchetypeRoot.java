@@ -25,24 +25,24 @@ public class CArchetypeRoot extends CComplexObject {
      * Reference to archetype is being used to fill a slot or redefine an external reference.
      * Typically an ‘interface’ archetype id, i.e. identifier with partial version information.
      */
-    private String archetypeReference;
+    private String archetypeRef;
 
     /**
      * Returns the reference to an archetype.
      *
      * @return
      */
-    public String getArchetypeReference() {
-        return archetypeReference;
+    public String getArchetypeRef() {
+        return archetypeRef;
     }
 
     /**
      * Sets the reference to an archetype.
      *
-     * @param archetypeReference
+     * @param archetypeRef
      */
-    public void setArchetypeReference(String archetypeReference) {
-        this.archetypeReference = archetypeReference;
+    public void setArchetypeRef(String value) {
+        this.archetypeRef = value;
     }
 
     /**
@@ -62,20 +62,20 @@ public class CArchetypeRoot extends CComplexObject {
      * @return
      */
     @Override
-    public Object generatePrototypeValue() {
+    public Object prototypeValue() {
         return null;
     }
 
     /**
      * True if constraints represented by this node, ignoring any sub-parts,
      * are narrower or the same as other. Typically used during validation of
-     * special-ised archetype nodes.
+     * specialized archetype nodes.
      *
      * @param other
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(ArchetypeConstraint other) {
+    public Boolean cConformsTo(ArchetypeConstraint other) {
         return null;
     }
 
@@ -89,7 +89,7 @@ public class CArchetypeRoot extends CComplexObject {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(ArchetypeConstraint other) {
+    public Boolean cCongruentTo(ArchetypeConstraint other) {
         return null;
     }
 

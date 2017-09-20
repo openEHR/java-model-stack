@@ -50,7 +50,7 @@ public class CReal extends COrdered<Double> {
      * @return
      */
     @Override
-    public Interval<Double> generatePrototypeValue() {
+    public Interval<Double> prototypeValue() {
         Interval<Double> interval = new Interval<>();
         interval.setLower(1.23);
         interval.setUpper(3.14);
@@ -60,13 +60,13 @@ public class CReal extends COrdered<Double> {
     /**
      * True if constraints represented by this node, ignoring any sub-parts,
      * are narrower or the same as other. Typically used during validation of
-     * special-ised archetype nodes.
+     * specialized archetype nodes.
      *
      * @param other
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(ArchetypeConstraint other) {
+    public Boolean cConformsTo(ArchetypeConstraint other) {
         return null;
     }
 
@@ -80,7 +80,7 @@ public class CReal extends COrdered<Double> {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(ArchetypeConstraint other) {
+    public Boolean cCongruentTo(ArchetypeConstraint other) {
         return null;
     }
 

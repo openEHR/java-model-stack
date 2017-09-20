@@ -87,7 +87,7 @@ public class OperationalTemplate extends AuthoredArchetype {
      * @param id The identifier of the component
      * @return The terminology associated with this component
      */
-    public ArchetypeTerminology getComponentTerminology(String id) {
+    public ArchetypeTerminology componentTerminology(String id) {
         return this.terminologyExtract.get(id);
     }
 }

@@ -49,7 +49,7 @@ public abstract class CDefinedObject<T> extends CObject {
      *
      * @return
      */
-    public abstract T generatePrototypeValue();
+    public abstract T prototypeValue();
 
     /**
      * True if there is an assumed value.

@@ -28,13 +28,13 @@ public class CString extends CPrimitiveObject<String> {
     /**
      * True if constraints represented by this node, ignoring any sub-parts,
      * are narrower or the same as other. Typically used during validation of
-     * special-ised archetype nodes.
+     * specialized archetype nodes.
      *
      * @param other
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(ArchetypeConstraint other) {
+    public Boolean cConformsTo(ArchetypeConstraint other) {
         throw new NotImplementedException();//TODO Need to implement
     }
 
@@ -48,7 +48,7 @@ public class CString extends CPrimitiveObject<String> {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(ArchetypeConstraint other) {
+    public Boolean cCongruentTo(ArchetypeConstraint other) {
         throw new NotImplementedException();//TODO Need to implement
     }
 
@@ -90,7 +90,7 @@ public class CString extends CPrimitiveObject<String> {
      * @return
      */
     @Override
-    public String generatePrototypeValue() {
+    public String prototypeValue() {
         return "Prototype value";
     }
 }

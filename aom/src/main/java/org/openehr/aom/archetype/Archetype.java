@@ -54,7 +54,7 @@ public interface Archetype {
      *
      * @return
      */
-    public Boolean isDifferential();
+    public Boolean getIsDifferential();
 
     /**
      * Sets flag indicating whether this archetype is differential or flat in its contents.
@@ -62,7 +62,7 @@ public interface Archetype {
      *
      * @param isDifferential
      */
-    public void setDifferential(Boolean isDifferential);
+    public void setIsDifferential(Boolean isDifferential);
 
     /**
      * Method returns the definition of this archetype.
@@ -121,15 +121,7 @@ public interface Archetype {
      *
      * @return The concept code of the root object of the archetype
      */
-    public String getConceptCode();
-
-    /**
-     * Method sets concept code of the root object of the archetype, also
-     * standing for the concept of the archetype as a whole.
-     *
-     * @param conceptCode The concept code of the root object of the archetype
-     */
-    public void setConceptCode(String conceptCode);
+    public String conceptCode();
 
     /**
      * Returns set of language-independent paths extracted from archetype.
@@ -138,23 +130,7 @@ public interface Archetype {
      *
      * @return  Set of language-independent paths extracted from archetype
      */
-    public List<String> getPhysicalPaths();
-
-    /**
-     * Sets set of language-independent paths extracted from archetype.
-     * Paths obey Xpath-like syntax and are formed from alternations of C_OBJECT.node_id and
-     * C_ATTRIBUTE.rm_attribute_name values.
-     *
-     * @param physicalPaths Set of language-independent paths extracted from archetype
-     */
-    public void setPhysicalPaths(List<String> physicalPaths);
-
-    /**
-     * Adds a language-independent path to this archetype.
-     *
-     * @param physicalPath Language-independent paths extracted from archetype
-     */
-    public void addPhysicalPath(String physicalPath);
+    public List<String> physicalPaths();
 
     /**
      * Returns set of language-dependent paths extracted from archetype. Paths obey the same syntax
@@ -163,23 +139,7 @@ public interface Archetype {
      * @param lang
      * @return Set of language-dependent paths extracted from archetype
      */
-    public List<String> getLogicalPaths(String lang);
-
-    /**
-     * Sets set of language-dependent paths extracted from archetype. Paths obey the same syntax as physical_paths,
-     * but with node_ids replaced by their meanings from the ontology.
-     * @param lang
-     * @param logicalPaths Set of language-dependent paths extracted from archetype
-     */
-    public void setLogicalPaths(String lang, List<String> logicalPaths);
-
-    /**
-     * Adds language-dependent path to this archetype.
-     *
-     * @param lang
-     * @param logicalPath Language dependent path
-     */
-    public void addLogicalPath(String lang, String logicalPath);
+    public List<String> logicalPaths(String lang);
 
     /**
      * Method returns specialisation depth of this archetype; larger than 0
@@ -187,15 +147,7 @@ public interface Archetype {
      *
      * @return Specialisation depth of this archetype
      */
-    public Integer getSpecializationDepth();
-
-    /**
-     * Method sets specialisation depth of this archetype; larger than 0
-     * if this archetype has a parent. Derived from terminology.specialisation_depth.
-     *
-     * @param depth Specialisation depth of this archetype
-     */
-    public void setSpecializationDepth(Integer depth);
+    public Integer specializationDepth();
 
     /**
      * True if this archetype is a specialisation of another.

@@ -99,7 +99,7 @@ public abstract class CObject extends ArchetypeConstraint {
      *
      * @return
      */
-    public Boolean getDeprecated() {
+    public Boolean getIsDeprecated() {
         return isDeprecated;
     }
 
@@ -108,7 +108,7 @@ public abstract class CObject extends ArchetypeConstraint {
      *
      * @param deprecated
      */
-    public void setDeprecated(Boolean deprecated) {
+    public void setIsDeprecated(Boolean deprecated) {
         isDeprecated = deprecated;
     }
 
@@ -140,7 +140,7 @@ public abstract class CObject extends ArchetypeConstraint {
      *
      * @return
      */
-    public Integer specializationDepth() {
+    public Integer specialisationDepth() {
         if(nodeId == null) {
             return -1;
         } else if(nodeId.indexOf('.') < 0) {
@@ -156,7 +156,7 @@ public abstract class CObject extends ArchetypeConstraint {
      * @param rmPropMult
      * @return
      */
-    public MultiplicityInterval effectiveOccurrences(ReferenceModelPropertyMultiplicity rmPropMult) {
+    public MultiplicityInterval effectiveOccurrences() {
 //        Integer occLower = null;
 //        if(occurrences != null) {
 //            return occurrences;
@@ -191,10 +191,10 @@ public abstract class CObject extends ArchetypeConstraint {
 
     //See Section 4.5.5.2
 
-    public Boolean constraintConformsTo(CObject other){throw new NotImplementedException();//TODO Need to implement
+    public Boolean cConformsTo(CObject other){throw new NotImplementedException();//TODO Need to implement
         }//, ReferenceModelTypesConformant rmTypesConformant) {}
 
-    public Boolean constraintCongruentTo(CObject other) {throw new NotImplementedException();//TODO Need to implement
+    public Boolean cCongruentTo(CObject other) {throw new NotImplementedException();//TODO Need to implement
         }
 
     public Boolean occurrencesConformsTo(CObject other) {throw new NotImplementedException();//TODO Need to implement
@@ -204,5 +204,15 @@ public abstract class CObject extends ArchetypeConstraint {
         }
 
     public Boolean nodeReuseCongruent(CObject other) {throw new NotImplementedException();//TODO Need to implement
+        }
+
+        /**
+         * Post: Result = occurrences /= Void
+         * and then occurrences.is_prohibited
+         * True if this C_OBJECT node is prohibited,
+         * i.e. if its occurrences is 0..0.<EOF>
+         */
+        public Boolean isProhibited() {
+            throw new NotImplementedException();
         }
 }

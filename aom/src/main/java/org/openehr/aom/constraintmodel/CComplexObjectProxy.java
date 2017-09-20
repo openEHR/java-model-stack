@@ -1,5 +1,7 @@
 package org.openehr.aom.constraintmodel;
 
+import org.apache.commons.lang.NotImplementedException;
+
 /**
  * A constraint defined by proxy, using a reference to an object constraint defined elsewhere in the same archetype.
  * Note that since this object refers to another node, there are two objects with available occurrences values. The
@@ -33,27 +35,27 @@ public class CComplexObjectProxy extends CObject {
     public void setTargetPath(String targetPath) {
         this.targetPath = targetPath;
     }
-
+ 
     /**
      * True if target occurrences are to be used as the value of occurrences in this object;
      * by the time of runtime use, the target occurrences value has to be set into this object.
      *
      * @return
      */
-    private Boolean useTargetOccurrences() {
+    public Boolean useTargetOccurrences() {
         return getOccurrences() == null;
     }
 
     /**
      * True if constraints represented by this node, ignoring any sub-parts,
      * are narrower or the same as other. Typically used during validation of
-     * special-ised archetype nodes.
+     * specialized archetype nodes.
      *
      * @param other
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(ArchetypeConstraint other) {
+    public Boolean cConformsTo(ArchetypeConstraint other) {
         return null;
     }
 
@@ -67,7 +69,7 @@ public class CComplexObjectProxy extends CObject {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(ArchetypeConstraint other) {
+    public Boolean cCongruentTo(ArchetypeConstraint other) {
         return null;
     }
 
@@ -80,4 +82,18 @@ public class CComplexObjectProxy extends CObject {
     public Boolean isLeaf() {
         return null;
     }
+
+    /**
+     * True if this node occurrences conforms  to other.occurrences; `other' is
+     * assumed to be in a flat archetype.
+     * If `other' is a C_COMPLEX_OBJECT,  then always True, since if occurrences
+     * defined on proxy node, it is an override of the occurrences on the target,
+     * and it doesn’t have to conform to anything except the containing attribute’s
+     * cardinality. However, if `other'  is also a C_COMPLEX_OBJECT then the
+     * override is of another use_node, and normal occurrences apply
+    */
+    public Boolean occurrencesConformsTo(CObject other) {
+		throw new NotImplementedException();//TODO Need to implement
+    }
+
 }

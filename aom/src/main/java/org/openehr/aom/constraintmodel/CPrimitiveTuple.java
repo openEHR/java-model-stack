@@ -18,7 +18,7 @@ public class CPrimitiveTuple extends CSecondOrder<CPrimitiveObject> {
      * @return
      */
     @Override
-    public Boolean constraintConformsTo(CSecondOrder other) {
+    public Boolean cConformsTo(CSecondOrder other) {
         return null;
     }
 
@@ -30,7 +30,7 @@ public class CPrimitiveTuple extends CSecondOrder<CPrimitiveObject> {
      * @return
      */
     @Override
-    public Boolean constraintCongruentTo(CSecondOrder other) {
+    public Boolean cCongruentTo(CSecondOrder other) {
         return null;
     }
 }

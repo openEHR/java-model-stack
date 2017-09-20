@@ -20,7 +20,7 @@ public abstract class ArchetypeConstraint<T extends ArchetypeConstraint> impleme
      * Inverse relationship for ARCHETYPE_CONSTRAINT node owned
      * by C_SECOND_ORDER.members attribute.
      */
-    private CSecondOrder secondOrderConstraintParent;
+    private CSecondOrder socParent;
 
     /**
      * Returns the parent node
@@ -45,17 +45,17 @@ public abstract class ArchetypeConstraint<T extends ArchetypeConstraint> impleme
      *
      * @return
      */
-    public CSecondOrder getSecondOrderConstraintParent() {
-        return secondOrderConstraintParent;
+    public CSecondOrder getSocParent() {
+        return socParent;
     }
 
     /**
      * Sets the second order constraint
      *
-     * @param secondOrderConstraintParent
+     * @param value;
      */
-    public void setSecondOrderConstraintParent(CSecondOrder secondOrderConstraintParent) {
-        this.secondOrderConstraintParent = secondOrderConstraintParent;
+    public void setSocParent(CSecondOrder value) {
+        this.socParent = value;
     }
 
     /**
@@ -83,30 +83,30 @@ public abstract class ArchetypeConstraint<T extends ArchetypeConstraint> impleme
     /**
      * Path of this node relative to root of archetype.
      */
-    public String getPath() {
+    public String path() {
         throw new NotImplementedException();//TODO Need to implement
     }
 
     /**
      * True if constraints represented by this node, ignoring any sub-parts,
      * are narrower or the same as other. Typically used during validation of
-     * special-ised archetype nodes.
+     * specialized archetype nodes.
      *
      * @param other
      * @return
      */
-    public abstract Boolean constraintConformsTo(T other);
+    public abstract Boolean cConformsTo(T other);
 
     /**
      * True if constraints represented by this node contain no further
      * redefinitions with respect to the node other, with the exception
-     * of node_id redefnition in C_OBJECT nodes. Typically used to test
+     * of node_id redefinition in C_OBJECT nodes. Typically used to test
      * if an inherited node locally contains any constraints.
      *
      * @param other
      * @return
      */
-    public abstract Boolean constraintCongruentTo(T other);
+    public abstract Boolean cCongruentTo(T other);
 
     /**
      * True if there is a second order constraint such as a tuple constraint on this node.
@@ -114,7 +114,7 @@ public abstract class ArchetypeConstraint<T extends ArchetypeConstraint> impleme
      * @return
      */
     public Boolean isSecondOrderConstrained() {
-        return secondOrderConstraintParent != null || (parent != null && parent.isSecondOrderConstrained());
+        return socParent != null || (parent != null && parent.isSecondOrderConstrained());
     }
 
     /**

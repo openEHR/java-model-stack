@@ -61,7 +61,7 @@ public class ArchetypeTerminology {
      *
      * @return
      */
-    public Boolean isDifferential() {
+    public Boolean getIsDifferential() {
         return isDifferential;
     }
 
@@ -72,7 +72,7 @@ public class ArchetypeTerminology {
      *
      * @param differential
      */
-    public void setDifferential(Boolean differential) {
+    public void setIsDifferential(Boolean differential) {
         isDifferential = differential;
     }
 

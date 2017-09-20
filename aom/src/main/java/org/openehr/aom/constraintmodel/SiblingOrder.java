@@ -23,16 +23,7 @@ public class SiblingOrder {
      *
      * @return
      */
-    public Boolean getBefore() {
-        return isBefore;
-    }
-
-    /**
-     * True if the order relationship is ‘before’, False, if it is ‘after’.
-     *
-     * @return
-     */
-    public Boolean isBefore() {
+    public Boolean getIsBefore() {
         return isBefore;
     }
 
@@ -41,7 +32,7 @@ public class SiblingOrder {
      *
      * @param before
      */
-    public void setBefore(Boolean before) {
+    public void setIsBefore(Boolean before) {
         isBefore = before;
     }
 
@@ -69,6 +60,6 @@ public class SiblingOrder {
      * @return
      */
     public Boolean isAfter() {
-        return !isBefore();
+        return !isBefore;
     }
 }
