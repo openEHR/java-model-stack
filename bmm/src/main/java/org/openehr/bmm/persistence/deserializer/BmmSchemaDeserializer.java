@@ -131,16 +131,19 @@ public class BmmSchemaDeserializer {
                 BmmClassDeserializer classDeserializer = new BmmClassDeserializer();
                 PersistedBmmClass bmmClass = classDeserializer.deserialize((CompositeOdinObject) classDefinition);
                 model.addClassDefinition(bmmClass);
+                bmmClass.setSourceSchemaId(model.getSchemaId());
             } else {
                 if(classDefinition.getType().equalsIgnoreCase("P_BMM_ENUMERATION_INTEGER")) {
                     BmmEnumerationIntegerDeserializer deserializer = new BmmEnumerationIntegerDeserializer();
                     PersistedBmmEnumerationInteger integerEnumeration = deserializer.deserialize((CompositeOdinObject)classDefinition);
                     model.addClassDefinition(integerEnumeration);
+                    integerEnumeration.setSourceSchemaId(model.getSchemaId());
                 }
                 if(classDefinition.getType().equalsIgnoreCase("P_BMM_ENUMERATION_STRING")) {
                     BmmEnumerationStringDeserializer deserializer = new BmmEnumerationStringDeserializer();
                     PersistedBmmEnumerationString stringEnumeration = deserializer.deserialize((CompositeOdinObject)classDefinition);
                     model.addClassDefinition(stringEnumeration);
+                    stringEnumeration.setSourceSchemaId(model.getSchemaId());
                 }
             }
         });

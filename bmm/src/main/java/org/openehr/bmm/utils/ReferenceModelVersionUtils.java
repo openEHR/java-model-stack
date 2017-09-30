@@ -26,9 +26,9 @@ import java.util.regex.Pattern;
 
 public class ReferenceModelVersionUtils {
     public static final String standardVersionRegex = "[0-9]+(\\.[0-9]+){0,2}";
+    public static final Pattern standardVersionPattern = Pattern.compile(standardVersionRegex);;
 
     public static boolean validateVersion(String version) {
-        Pattern standardVersionPattern = Pattern.compile(standardVersionRegex);
         Matcher matcher = standardVersionPattern.matcher(version);
         return matcher.matches();
     }

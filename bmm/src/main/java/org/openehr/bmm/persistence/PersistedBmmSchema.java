@@ -23,6 +23,7 @@ package org.openehr.bmm.persistence;
 
 import org.openehr.bmm.core.*;
 import org.openehr.bmm.persistence.serializer.BmmSchemaSerializer;
+import org.openehr.bmm.persistence.validation.BmmSchemaValidator;
 import org.openehr.bmm.utils.ReferenceModelVersionUtils;
 
 import java.io.Serializable;
@@ -60,6 +61,14 @@ public class PersistedBmmSchema extends PersistedBmmPackageContainer implements 
     private PersistedBmmSchemaState state;
 
     /**
+     * package structure in which all top-level qualified package names like xx.yy.zz have been
+     * expanded out to a hierarchy of BMM_PACKAGE objects
+     */
+    private Map<String,PersistedBmmPackage> canonicalPackages;
+
+    private BmmSchemaValidator bmmSchemaValidator;
+
+    /**
      * Adaptee class for schema metadata.
      */
     private final BmmSchemaCore bmmSchemaCore;
@@ -72,6 +81,8 @@ public class PersistedBmmSchema extends PersistedBmmPackageContainer implements 
         includes = new LinkedHashMap<>();
         bmmSchemaCore = new BmmSchemaCore();
         mergedSchema = new ArrayList<>();
+        canonicalPackages = new LinkedHashMap<>();
+        bmmSchemaValidator = new BmmSchemaValidator(this);
     }
 
     /**
@@ -487,6 +498,30 @@ bmmSchemaCore.setRmPublisher(rmPublisher);
         });
     }
 
+    public Map<String, PersistedBmmPackage> getCanonicalPackages() {
+        return canonicalPackages;
+    }
+
+    public void setCanonicalPackages(Map<String, PersistedBmmPackage> canonicalPackages) {
+        this.canonicalPackages = canonicalPackages;
+    }
+
+    public void addCanonicalPackage(PersistedBmmPackage aPackage) {
+        this.canonicalPackages.put(aPackage.getName().toUpperCase(), aPackage);
+    }
+
+    public PersistedBmmPackage getCanonicalPackage(String aPackageName) {
+        return this.canonicalPackages.get(aPackageName.toUpperCase());
+    }
+
+    public BmmSchemaValidator getBmmSchemaValidator() {
+        return bmmSchemaValidator;
+    }
+
+    public void setBmmSchemaValidator(BmmSchemaValidator bmmSchemaValidator) {
+        this.bmmSchemaValidator = bmmSchemaValidator;
+    }
+
     /**
      * Method adds include to schema.
      *
@@ -556,6 +591,41 @@ bmmSchemaCore.setRmPublisher(rmPublisher);
     public String serialize() {
         BmmSchemaSerializer serializer = new BmmSchemaSerializer(this);
         return serializer.serialize();
+    }
+
+    /**
+     * Finalisation work:
+     * 1. convert packages to canonical form, i.e. full hierarchy with no packages with names like aa.bb.cc
+     * 2. set up include processing list
+     */
+    public void loadFinalize() {
+        PersistedBmmPackage childPackage = null;
+        String childPackageKey = null;
+        Map<String, PersistedBmmPackage> packageContainer = null;
+        //top-level package canonicalisation: the result is that in each P_BMM_SCHEMA, the
+        //attribute `canonical_packages' contains the mergeable structure
+        for(PersistedBmmPackage topPackage : getPackages().values()) {
+            //Iterate over qualified name, inserting new packages for each of these names.
+            //E.g. 'rm.composition.content' causes three new packages 'rm', 'composition'
+            // and 'content' to be created and linked, with the 'rm' one being put in
+            // `canonical_packages'
+            if(topPackage.getName().indexOf(org.openehr.bmm.persistence.validation.BmmDefinitions.PACKAGE_NAME_DELIMITER) >= 0) {
+                packageContainer = canonicalPackages;
+                String[] packagePathComponents = topPackage.getName().split("\\.");
+                for(int index = 0; index < packagePathComponents.length; index++) {
+                    childPackageKey = packagePathComponents[index].toUpperCase();
+                    if(packageContainer.containsKey(childPackageKey)) {
+                        childPackage = packageContainer.get(childPackageKey);
+                    } else {
+                        childPackage = new PersistedBmmPackage(packagePathComponents[index]);
+                        packageContainer.put(childPackageKey, childPackage);
+                    }
+                    packageContainer = childPackage.getPackages();
+                }
+            } else {
+                canonicalPackages.put(topPackage.getName().toUpperCase(), topPackage);
+            }
+        }
     }
 
     /**
@@ -742,6 +812,8 @@ bmmSchemaCore.setRmPublisher(rmPublisher);
             }
         });
 
+        bmmSchemaValidator.validate();
+
         return errors;
     }
 
@@ -764,6 +836,60 @@ bmmSchemaCore.setRmPublisher(rmPublisher);
             }
         });
 
+    }
+
+    public void doAllClasses(Consumer<PersistedBmmClass> action) {
+        getPrimitives().forEach(action);
+        getClassDefinitions().forEach(action);
+    }
+
+    /**
+     * True if `a_class_name' has a class definition or is a primitive type in the model. Note that a_type_name
+     * could be a generic type string; only the root class is considered
+     * @param aClassName
+     * @return
+     */
+    public boolean hasClassDefinition(String aClassName) {
+        return classDefinitions.containsKey(aClassName.toUpperCase()) || hasPrimitiveType(aClassName);
+    }
+
+    /**
+     * True if `a_class_name' is a primitive type in the model. Note that a_type_name
+     * could be a generic type string; only the root class is considered
+     *
+     * @param aClassName
+     * @return
+     */
+    public boolean hasPrimitiveType(String aClassName) {
+        return primitives.containsKey(aClassName.toUpperCase());
+    }
+
+    /**
+     * True if there is a package at the path `a_path' under this package
+     *
+     * @param aPath
+     * @return
+     */
+    public boolean hasCanonicalPackagePath(String aPath) {
+        String[] packageNames = aPath.toUpperCase().split("\\" + org.openehr.bmm.persistence.validation.BmmDefinitions.PACKAGE_NAME_DELIMITER);;
+        PersistedBmmPackageContainer packageContainer = null;
+        PersistedBmmPackage currentPackage = canonicalPackages.get(packageNames[0]);
+        boolean retVal = false;
+        if(packageNames.length == 1 && currentPackage != null) {
+            //Path consists of a single package and it is a top-level package.
+            retVal = true;
+        } else {
+            for (int index = 1; index < packageNames.length; index++) {
+                if (currentPackage.getPackages().containsKey(packageNames[index])) {
+                    currentPackage = getPackages().get(packageNames[index]);
+                    retVal = true;
+                } else {
+                    retVal = false;
+                    break;
+                }
+            }
+        }
+        return retVal;
     }
 
     public String toString() {

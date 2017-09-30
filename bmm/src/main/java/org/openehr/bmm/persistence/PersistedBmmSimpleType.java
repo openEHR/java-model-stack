@@ -27,6 +27,8 @@ import org.openehr.bmm.core.BmmSimpleType;
 import org.openehr.bmm.core.BmmType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Persistent form of BMM_SIMPLE_TYPE.
@@ -93,5 +95,11 @@ public class PersistedBmmSimpleType extends PersistedBmmType<BmmSimpleType> impl
     @Override
     public String asTypeString() {
         return type;
+    }
+
+    public List<String> flattenedTypeList() {
+        List<String> retVal = new ArrayList<>();
+        retVal.add(type);
+        return retVal;
     }
 }

@@ -74,4 +74,11 @@ public abstract class PersistedBmmType<T extends BmmType> extends PersistedBmmMo
      */
     public abstract String asTypeString();
 
+    /**
+     * Flattened list of type names making up full type.
+     *
+     * @return
+     */
+    public abstract List<String> flattenedTypeList();
+
 }

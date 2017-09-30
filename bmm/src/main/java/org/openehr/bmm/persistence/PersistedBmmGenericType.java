@@ -241,4 +241,16 @@ public class PersistedBmmGenericType extends PersistedBmmType<BmmGenericType> im
         builder.append(">");
         return builder.toString();
     }
+
+    /**
+     * flattened list of type names making up full type.
+     * @return
+     */
+    public List<String> flattenedTypeList() {
+        List<String> retVal = new ArrayList<>();
+        getGenericParameterReferences().forEach( item -> {
+            retVal.addAll(item.flattenedTypeList());
+        });
+        return retVal;
+    }
 }

@@ -24,6 +24,8 @@ package org.openehr.bmm.persistence;
 import org.openehr.bmm.core.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Open type reference to a single type parameter, i.e. typically 'T', 'V', 'K' etc. The parameter must be in the
@@ -87,5 +89,16 @@ public class PersistedBmmOpenType extends PersistedBmmType<BmmOpenType> implemen
     @Override
     public String asTypeString() {
         return type;
+    }
+
+    /**
+     * Flattened list of type names making up full type.
+     * @return
+     */
+    @Override
+    public List<String> flattenedTypeList() {
+        List<String> retVal = new ArrayList<>();
+        retVal.add(type);
+        return retVal;
     }
 }

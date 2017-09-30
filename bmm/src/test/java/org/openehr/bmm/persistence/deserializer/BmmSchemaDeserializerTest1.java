@@ -31,6 +31,7 @@ import org.openehr.bmm.persistence.serializer.BmmSchemaSerializer;
 import org.openehr.odin.CompositeOdinObject;
 import org.openehr.odin.antlr.OdinVisitorImpl;
 import org.openehr.odin.loader.OdinLoaderImpl;
+import org.openehr.utils.error.ErrorAccumulator;
 
 import java.util.Map;
 
@@ -48,6 +49,10 @@ public class BmmSchemaDeserializerTest1 {
         CompositeOdinObject root = visitor.getAstRootNode();
         BmmSchemaDeserializer deserializer = new BmmSchemaDeserializer();
         persistedBmmSchema = deserializer.deserialize(root);
+        persistedBmmSchema.loadFinalize();
+        persistedBmmSchema.validate();
+        ErrorAccumulator errorCache = persistedBmmSchema.getBmmSchemaValidator().getErrorCache();
+        System.out.println(errorCache);
     }
 
     @Test
@@ -92,7 +97,7 @@ public class BmmSchemaDeserializerTest1 {
         assertEquals(2, persistedBmmSchema.getSchemaContributors().size());
         assertEquals("Any", persistedBmmSchema.getArchetypeParentClass());
         assertEquals("DATA_VALUE", persistedBmmSchema.getArchetypeDataValueParentClass());
-        assertEquals("TestParent", persistedBmmSchema.getArchetypeRmClosurePackages().get(0));
+        assertEquals("ParentPackage", persistedBmmSchema.getArchetypeRmClosurePackages().get(0));
     }
 
     public void testIncludes() {

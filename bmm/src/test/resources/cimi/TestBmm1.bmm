@@ -11,7 +11,7 @@ schema_description = <"A manually created very simplified BMM for testing purpos
 schema_contributors = <"John Doe", "Francis Johnson">
 archetype_parent_class= <"Any">
 archetype_data_value_parent_class=<"DATA_VALUE">
-archetype_rm_closure_packages = <"TestParent", ...>
+archetype_rm_closure_packages = <"ParentPackage", ...>
 archetype_visualize_descendants_of=<"Any">
 
 includes = <

@@ -24,6 +24,8 @@ package org.openehr.bmm.persistence;
 import org.openehr.bmm.core.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Persistent form of BMM_CONTAINER_TYPE.
@@ -35,17 +37,19 @@ public class PersistedBmmContainerType extends PersistedBmmType<BmmContainerType
     public static final String P_BMM_CONTAINER_TYPE = "P_BMM_CONTAINER_TYPE";
 
     /**
-     * The type of the container. This converts to the root_type in BMM_GENERIC_TYPE. Persisted attribute.
+     * The target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE. Persisted attribute.
      */
-    private String containerType;
+    private String type;
     /**
      * Type definition of `type', if not a simple String type reference. Persisted attribute.
      */
     private PersistedBmmType typeDefinition;
     /**
-     * The target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE. Persisted attribute.
+     * The type of the container. This converts to the root_type in BMM_GENERIC_TYPE. Persisted attribute.
      */
-    private String type;
+    private String containerType;
+
+
 
     public PersistedBmmContainerType() {
         super();
@@ -116,7 +120,7 @@ public class PersistedBmmContainerType extends PersistedBmmType<BmmContainerType
      *
      * @return
      */
-    private PersistedBmmType getTypeReference() {
+    public PersistedBmmType getTypeReference() {
         if(typeDefinition == null && type != null) {
             if(type.length() == 1) {//Probably a parameter such as "T"
                 typeDefinition = new PersistedBmmOpenType(type);
@@ -156,5 +160,14 @@ public class PersistedBmmContainerType extends PersistedBmmType<BmmContainerType
     @Override
     public String asTypeString() {
         return containerType + "<" + typeDefinition.asTypeString() + ">";
+    }
+
+    public List<String> flattenedTypeList() {
+        List<String> retVal = new ArrayList<>();
+        retVal.add(containerType);
+        if(getTypeReference() != null) {
+            retVal.addAll(getTypeReference().flattenedTypeList());
+        }
+        return retVal;
     }
 }
