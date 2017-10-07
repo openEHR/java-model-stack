@@ -74,6 +74,10 @@ public abstract class AnyValidator {
         }
     }
 
+    public int getMessageCount() {
+        return errorCache.size();
+    }
+
     public String getErrorStrings() {
         return errorCache.toString();
     }

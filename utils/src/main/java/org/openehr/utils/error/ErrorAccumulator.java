@@ -329,4 +329,13 @@ public class ErrorAccumulator {
         });
         return builder.toString();
     }
+
+    /**
+     * Returns the number of messages in this error cache.
+     *
+     * @return
+     */
+    public int size() {
+        return errorList.size();
+    }
 }

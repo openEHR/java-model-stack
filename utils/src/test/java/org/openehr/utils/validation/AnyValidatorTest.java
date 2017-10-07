@@ -131,7 +131,15 @@ public class AnyValidatorTest {
 
     @Test
     public void mergeErrors() throws Exception {
-        //validator.mergeErrors();
+        validator.addError("ErrorKey", new ArrayList<String>() {{
+            add("argument 1");
+        }});
+        ErrorAccumulator other = new ErrorAccumulator();
+        other.addError("ErrorKey", new ArrayList<String>() {{
+            add("argument 1");
+        }}, null);
+        validator.mergeErrors(other);
+        assertEquals(2, validator.getMessageCount());
     }
 
     @Test
