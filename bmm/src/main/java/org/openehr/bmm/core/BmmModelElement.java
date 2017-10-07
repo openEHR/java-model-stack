@@ -21,8 +21,6 @@ package org.openehr.bmm.core;
  * Author: Claude Nanjo
  */
 
-import org.openehr.bmm.core.BmmDefinitions;
-
 import java.io.Serializable;
 
 /**
@@ -30,7 +28,7 @@ import java.io.Serializable;
  *
  * Created by cnanjo on 4/11/16.
  */
-public abstract class BmmModelElement extends BmmDefinitions implements Serializable {
+public abstract class BmmModelElement implements Serializable {
 
     /**
      * Optional documentation of this element.

@@ -21,8 +21,6 @@ package org.openehr.bmm.persistence;
  * Author: Claude Nanjo
  */
 
-import org.openehr.bmm.core.BmmDefinitions;
-
 import java.io.Serializable;
 
 /**

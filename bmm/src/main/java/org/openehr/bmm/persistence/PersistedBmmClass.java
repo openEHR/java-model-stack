@@ -161,7 +161,11 @@ public class PersistedBmmClass extends PersistedBmmModelElement implements Seria
      * @param property
      */
     public void addProperty(PersistedBmmProperty property) {
-        properties.put(property.getName(), property);
+        if(properties.containsKey(property.getName())) { //Should this be uppercased?
+            throw new IllegalArgumentException("Class already contains a property with name " + property.getName());
+        } else {
+            properties.put(property.getName(), property);
+        }
     }
 
     /**
@@ -328,7 +332,6 @@ public class PersistedBmmClass extends PersistedBmmModelElement implements Seria
         }
         bmmClass.setDocumentation(getDocumentation());
         bmmClass.setAbstract(isAbstract());
-        bmmClass.setSourceSchemaId(getSourceSchemaId());
     }
 
     /**

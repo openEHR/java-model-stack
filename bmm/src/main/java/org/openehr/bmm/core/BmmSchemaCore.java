@@ -21,10 +21,6 @@ package org.openehr.bmm.core;
  * Author: Claude Nanjo
  */
 
-import org.openehr.bmm.core.BmmDefinitions;
-import org.openehr.bmm.core.IBmmSchemaCore;
-import org.openehr.bmm.persistence.serializer.Serialize;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +31,14 @@ import java.util.List;
  * Created by cnanjo on 4/11/16.
  */
 public class BmmSchemaCore implements IBmmSchemaCore, Serializable {
+
+    private String DEFAULT_SCHEMA_OPTION_CLASS_NAME = "Any";
+    private String DEFAULT_SCHEMA_LIFECYCLE_STATE = "Initial";
+    private String DEFAULT_SCHEMA_NAME = "Unknown";
+    private String DEFAULT_SCHEMA_RELEASE = "Unknown";
+    private String DEFAULT_SCHEMA_REVISION = "Unknown";
+    private String DEFAULT_SCHEMA_AUTHOR = "Unknown";
+    private String DEFAULT_SCHEMA_DESCRIPTION = "(none)";
 
     /**
      * Publisher of model expressed in the schema. Persisted attribute.
@@ -106,6 +110,13 @@ public class BmmSchemaCore implements IBmmSchemaCore, Serializable {
     public BmmSchemaCore() {
         schemaContributors = new ArrayList<String>();
         archetypeRmClosurePackages = new ArrayList<String>();
+    }
+
+    public BmmSchemaCore(String aRmPublisher, String aSchemaName, String aRmRelease) {
+        this();
+        rmPublisher = aRmPublisher;
+        schemaName = aSchemaName;
+        rmRelease = aRmRelease;
     }
 
     /**
@@ -254,6 +265,14 @@ public class BmmSchemaCore implements IBmmSchemaCore, Serializable {
         this.schemaContributors = schemaContributors;
     }
 
+    public boolean hasSchemaContributor(String aSchemaContributor) {
+        return this.schemaContributors.contains(aSchemaContributor);
+    }
+
+    public void addSchemaContributor(String aContributor) {
+        this.schemaContributors.add(aContributor);
+    }
+
     /**
      * Returns the name of a parent class used within the schema to provide archetype capability, enabling filtering of
      * classes in RM visualisation. If empty, 'Any' is assumed. Persisted attribute.
@@ -263,6 +282,8 @@ public class BmmSchemaCore implements IBmmSchemaCore, Serializable {
     public String getArchetypeParentClass() {
         return archetypeParentClass;
     }
+
+    public boolean hasArchetypeParentClass() { return archetypeParentClass != null;}
 
     /**
      * Sets the name of a parent class used within the schema to provide archetype capability, enabling filtering of
@@ -283,6 +304,8 @@ public class BmmSchemaCore implements IBmmSchemaCore, Serializable {
     public String getArchetypeDataValueParentClass() {
         return archetypeDataValueParentClass;
     }
+
+    public boolean hasArchetypeDataValueParentClass() { return archetypeDataValueParentClass != null; }
 
     /**
      * Sets the name of a parent class of logical 'data types' used within the schema to provide archetype capability,
@@ -323,6 +346,16 @@ public class BmmSchemaCore implements IBmmSchemaCore, Serializable {
      */
     public void addArchetypeRmClosurePackage(String rmClosurePackage) {
         archetypeRmClosurePackages.add(rmClosurePackage);
+    }
+
+    /**
+     * `a_package_path' is a qualified package name, like 'org.openehr.ehr', 'org.openehr.demographic'
+     *
+     * @param rmClosurePackage
+     * @return
+     */
+    public boolean hasArchetypeRmClosurePackage(String rmClosurePackage) {
+        return archetypeRmClosurePackages.contains(rmClosurePackage);
     }
 
     /**

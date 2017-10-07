@@ -21,9 +21,6 @@ package org.openehr.bmm.core;
  * Author: Claude Nanjo
  */
 
-import org.openehr.bmm.rm_access.SchemaDescriptor;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**

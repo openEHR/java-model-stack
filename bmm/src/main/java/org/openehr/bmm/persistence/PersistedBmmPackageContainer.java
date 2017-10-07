@@ -24,6 +24,7 @@ package org.openehr.bmm.persistence;
 import org.openehr.bmm.core.IBmmPackageContainer;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Abstraction of a BMM model component that contains packages and classes.
@@ -97,7 +98,7 @@ public abstract class PersistedBmmPackageContainer extends PersistedBmmModelElem
         return paths;
     }
 
-    protected void getPackagePaths(PersistedBmmPackage bmmPackage, StringBuilder builder, List<String> paths) {
+    public void getPackagePaths(PersistedBmmPackage bmmPackage, StringBuilder builder, List<String> paths) {
         if(bmmPackage.getPackages() != null && bmmPackage.getPackages().size() > 0) {
             bmmPackage.getPackages().values().forEach( childPackage -> {
                 StringBuilder childBuilder = new StringBuilder(builder.toString()).append(DEFAULT_PACKAGE_DELIMITER);
@@ -106,5 +107,27 @@ public abstract class PersistedBmmPackageContainer extends PersistedBmmModelElem
                 getPackagePaths(childPackage, childBuilder, paths);
             });
         }
+    }
+
+    /**
+     * recursively execute `action' procedure, taking package as argument
+     * @param agent
+     */
+    public void doRecursivePackages(Consumer<PersistedBmmPackage> agent) {
+        getPackages().forEach((packageName, packageItem) -> {
+            agent.accept(packageItem);
+            packageItem.doRecursivePackages(agent);
+        });
+    }
+
+    /**
+     *  Convert all keys to upper case to ensure case-insensitive matching
+     */
+    public void correctPackageKeys() {
+        Map<String, PersistedBmmPackage> updatedPackages = new HashMap<>();
+        packages.forEach((key,value) -> {
+            updatedPackages.put(key.toUpperCase(), value);
+        });
+        packages = updatedPackages;
     }
 }

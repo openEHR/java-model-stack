@@ -318,7 +318,7 @@ public class BmmSchemaDeserializerTest1 {
     }
 
     public PersistedBmmClass testClass(PersistedBmmSchema model, String className, int propertyCount, int ancestorCount) {
-        PersistedBmmClass bmmClass = model.retrieveClassByName(className);
+        PersistedBmmClass bmmClass = model.getClassDefinition(className);
         assertNotNull(bmmClass);
         assertEquals(propertyCount, bmmClass.getProperties().size());
         assertEquals(ancestorCount, bmmClass.getAncestors().size());

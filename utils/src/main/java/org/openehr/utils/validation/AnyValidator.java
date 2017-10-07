@@ -33,12 +33,32 @@ public abstract class AnyValidator {
     /**
      * True if validation succeeded
      */
-    private boolean passed = true;
+    protected boolean passed = true;
 
     /**
      * Error output of validator - things that must be corrected
      */
     private ErrorAccumulator errorCache = new ErrorAccumulator();
+
+    /**
+     * Flag indicating that all validation passed. This flag is set to true in two cases:
+     * 1. validation() was invoked and resulted in no messages with a severity of ERROR_TYPE_ERROR.
+     * 2. merge() was invoked and the merged content contained no errors.
+     *
+     * @return
+     */
+    public boolean hasPassed() {
+        return passed;
+    }
+
+    /**
+     * Sets flag to indicate that all validation has passed.
+     *
+     * @param passed
+     */
+    public void setPassed(boolean passed) {
+        this.passed = passed;
+    }
 
     /**
      * Returns the ErrorAccumulator for this validator
@@ -59,25 +79,64 @@ public abstract class AnyValidator {
     }
 
     /**
-     * Resets this validator for a new run
+     * Resets the state of this validator for a new run.
      */
     public void reset() {
         passed = true;
         errorCache = new ErrorAccumulator();
     }
 
+    /**
+     * Returns 'True' if error cache is non-empty and has errors.
+     *
+     * @return
+     */
     public boolean hasErrors() {
         return errorCache.hasErrors();
     }
 
+    /**
+     * Returns true if error cache has no errors.
+     * @return
+     */
+    public boolean hasNoErrors() {
+        return !errorCache.hasErrors();
+    }
+
+    /**
+     * Returns true if the cache has an error with the given code argument.
+     *
+     * @param aCode
+     * @return
+     */
     public boolean hasError(String aCode) {
         return errorCache.hasError(aCode);
     }
 
-    public boolean hasWarnings(String aCode) {
-        return errorCache.hasWarnings();
+    /**
+     * Returns true if the cache has a warning with the given code argument.
+     * @param aCode
+     * @return
+     */
+    public boolean hasWarning(String aCode) {
+        return errorCache.hasWarning(aCode);
     }
 
+    /**
+     * Returns true if the cache has an Info message with the given code argument.
+     * @param aCode
+     * @return
+     */
+    public boolean hasInfo(String aCode) {
+        return errorCache.hasInfo(aCode);
+    }
+
+    /**
+     * Merges the content of the other error accumulator and, if an error is present
+     * in the other error accumulator, hasPassed() will return false.
+     *
+     * @param other
+     */
     public void mergeErrors(ErrorAccumulator other) {
         errorCache.append(other);
         passed = passed && !(other.hasErrors());
@@ -154,7 +213,7 @@ public abstract class AnyValidator {
                 passed = false;
             }
         } else {
-            new IllegalStateException("Error - not ready to validate");
+            throw new IllegalStateException("Error - not ready to validate");
         }
     }
 

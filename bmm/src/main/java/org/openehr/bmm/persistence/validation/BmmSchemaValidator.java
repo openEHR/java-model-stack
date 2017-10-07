@@ -3,11 +3,9 @@ package org.openehr.bmm.persistence.validation;
 import org.apache.commons.lang.StringUtils;
 import org.openehr.bmm.persistence.*;
 import org.openehr.utils.error.ErrorAccumulator;
-import org.openehr.utils.error.ErrorDescriptor;
 import org.openehr.utils.validation.AnyValidator;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class BmmSchemaValidator extends AnyValidator {
 
@@ -15,8 +13,39 @@ public class BmmSchemaValidator extends AnyValidator {
     private Map<String, List<String>> ancestorsIndex = new LinkedHashMap<>();
     private Map<String, ErrorAccumulator> schemaErrorTableCache = new LinkedHashMap<>();
 
+    public BmmSchemaValidator() { }
+
     public BmmSchemaValidator(PersistedBmmSchema schema) {
         this.schema = schema;
+    }
+
+    public PersistedBmmSchema getSchema() {
+        return schema;
+    }
+
+    public void setSchema(PersistedBmmSchema schema) {
+        this.schema = schema;
+    }
+
+    /**
+     * Returns set of error accumulators for other schemas, keyed by schema id
+     *
+     * @return
+     */
+    public Map<String, ErrorAccumulator> getSchemaErrorTableCache() {
+        if(schemaErrorTableCache == null) {
+            schemaErrorTableCache = new LinkedHashMap<>();
+        }
+        return schemaErrorTableCache;
+    }
+
+    /**
+     * Sets set of error accumulators for other schemas, keyed by schema id
+     *
+     * @param schemaErrorTableCache
+     */
+    public void setSchemaErrorTableCache(Map<String, ErrorAccumulator> schemaErrorTableCache) {
+        this.schemaErrorTableCache = schemaErrorTableCache;
     }
 
     /**
@@ -144,7 +173,7 @@ public class BmmSchemaValidator extends AnyValidator {
                 Map<String, PersistedBmmGenericParameter> genericParameterDefinitions = persistedBmmClass.getGenericParameterDefinitions();
                 genericParameterDefinitions.forEach((name, persistedBmmGenericParameter) -> {
                     String conformsToType = persistedBmmGenericParameter.getConformsToType();
-                    if(!schema.hasClassDefinition(conformsToType)) {
+                    if(!schema.hasClassOrPrimitiveDefinition(conformsToType)) {
                         addValidityError(persistedBmmClass.getSourceSchemaId(), "BMM_GPCT", new ArrayList<String>() {
                             {
                                 add(persistedBmmClass.getSourceSchemaId());
@@ -166,7 +195,7 @@ public class BmmSchemaValidator extends AnyValidator {
     public void validateProperty(PersistedBmmClass persistedBmmClass, PersistedBmmProperty persistedBmmProperty) {
         //first check if any property replicates a property from a parent class
         persistedBmmClass.getAncestors().forEach(ancestorName -> {
-            PersistedBmmClass ancestor = schema.findClassDefinition(ancestorName);
+            PersistedBmmClass ancestor = schema.findClassOrPrimitiveDefinition(ancestorName);
             PersistedBmmProperty ancestorProperty = ancestor.getPropertyByName(persistedBmmProperty.getName());
             if(ancestor != null && ancestorProperty != null && !propertyConformsTo(persistedBmmProperty, ancestorProperty)){
                 addValidityError(persistedBmmClass.getSourceSchemaId(), "BMM_PRNCF", new ArrayList<String>() {
@@ -184,7 +213,7 @@ public class BmmSchemaValidator extends AnyValidator {
         if(persistedBmmProperty instanceof PersistedBmmSingleProperty) {
             PersistedBmmSingleProperty singlePropertyDefinition = (PersistedBmmSingleProperty)persistedBmmProperty;
             PersistedBmmSimpleType attributeTypeDefinition = singlePropertyDefinition.getTypeDefinition();
-            if(StringUtils.isEmpty(attributeTypeDefinition.getType()) || !schema.hasClassDefinition(attributeTypeDefinition.getType())) {
+            if(StringUtils.isEmpty(attributeTypeDefinition.getType()) || !schema.hasClassOrPrimitiveDefinition(attributeTypeDefinition.getType())) {
                 addValidityError(persistedBmmClass.getSourceSchemaId(), "BMM_SPT", new ArrayList<String>() {
                     {
                         add(persistedBmmClass.getSourceSchemaId());
@@ -220,7 +249,7 @@ public class BmmSchemaValidator extends AnyValidator {
             PersistedBmmContainerProperty containerPropertyDefinition = (PersistedBmmContainerProperty)persistedBmmProperty;
             PersistedBmmContainerType attributeTypeDefinition = containerPropertyDefinition.getTypeDefinition();
             PersistedBmmType attributeTypeReference = attributeTypeDefinition.getTypeReference();
-            if(!schema.hasClassDefinition(attributeTypeDefinition.getContainerType())) {
+            if(!schema.hasClassOrPrimitiveDefinition(attributeTypeDefinition.getContainerType())) {
                 addValidityError(persistedBmmClass.getSourceSchemaId(), "BMM_CPCT", new ArrayList<String>() {
                     {
                         add(persistedBmmClass.getSourceSchemaId());
@@ -234,7 +263,7 @@ public class BmmSchemaValidator extends AnyValidator {
                 List<String> typeReferences = attributeTypeReference.flattenedTypeList();
                 if(typeReferences != null) {
                     typeReferences.forEach(typeReference -> {
-                        if (!schema.hasClassDefinition(typeReference)) {
+                        if (!schema.hasClassOrPrimitiveDefinition(typeReference)) {
                             if (persistedBmmClass.isGeneric()) {  //it might be a formal parameter, to be matched against those of enclosing class
                                 Map<String, PersistedBmmGenericParameter> genericParameters = persistedBmmClass.getGenericParameterDefinitions();
                                 if (!genericParameters.containsKey(typeReference)) {
@@ -286,7 +315,7 @@ public class BmmSchemaValidator extends AnyValidator {
             PersistedBmmGenericProperty genericPropertyDefinition = (PersistedBmmGenericProperty)persistedBmmProperty;
             PersistedBmmGenericType attributeTypeDefinition = genericPropertyDefinition.getTypeDefinition();
             if(attributeTypeDefinition != null) {
-                if(!schema.hasClassDefinition(attributeTypeDefinition.getRootType())) {
+                if(!schema.hasClassOrPrimitiveDefinition(attributeTypeDefinition.getRootType())) {
                     addValidityError(persistedBmmClass.getSourceSchemaId(), "BMM_GPRT", new ArrayList<String>() {
                         {
                             add(persistedBmmClass.getSourceSchemaId());
@@ -299,7 +328,7 @@ public class BmmSchemaValidator extends AnyValidator {
                 attributeTypeDefinition.getGenericParameterReferences().forEach((genericParameter) -> {
                     List<String> typeReferences = genericParameter.flattenedTypeList();
                     typeReferences.forEach(typeReference -> {
-                        if(!schema.hasClassDefinition(typeReference)) {
+                        if(!schema.hasClassOrPrimitiveDefinition(typeReference)) {
                             if (persistedBmmClass.isGeneric()) {  //it might be a formal parameter, to be matched against those of enclosing class
                                 Map<String, PersistedBmmGenericParameter> genericParameters = persistedBmmClass.getGenericParameterDefinitions();
                                 if (!genericParameters.containsKey(typeReference)) {
@@ -410,17 +439,33 @@ public class BmmSchemaValidator extends AnyValidator {
     public boolean propertyConformsTo(PersistedBmmProperty aChildProperty, PersistedBmmProperty aParentProperty) {
         boolean retVal = false;
         if(aParentProperty instanceof PersistedBmmSingleProperty) {
-            PersistedBmmSingleProperty bmmSingleParentProperty = (PersistedBmmSingleProperty)aParentProperty;
+            PersistedBmmSingleProperty bmmSingleParentProperty = (PersistedBmmSingleProperty) aParentProperty;
             //True if `a_parent_prop' type is Any
-            if(bmmSingleParentProperty.getTypeDefinition().getType().equalsIgnoreCase(BmmDefinitions.ANY_TYPE)) {
+            if (bmmSingleParentProperty.getTypeDefinition().getType().equalsIgnoreCase(BmmDefinitions.ANY_TYPE)) {
                 retVal = true;
             }
-            if(aChildProperty instanceof PersistedBmmProperty) {
-                PersistedBmmSingleProperty bmmSingleChildProperty = (PersistedBmmSingleProperty)aChildProperty;
-                //property names are the same
-                if(aChildProperty.getName().equalsIgnoreCase(aParentProperty.getName())) {
-                    retVal = typeStrictlyConformsTo(bmmSingleChildProperty.getTypeDefinition().getType(), bmmSingleParentProperty.getTypeDefinition().getType());
+        } else if(aChildProperty.getName().equalsIgnoreCase(aParentProperty.getName())) {
+            //Properties names are the same
+            if(aChildProperty instanceof PersistedBmmSingleProperty && aParentProperty instanceof PersistedBmmSingleProperty) {
+                PersistedBmmSingleProperty aChildSingleProperty = (PersistedBmmSingleProperty)aChildProperty;
+                PersistedBmmSingleProperty aParentSingleProperty = (PersistedBmmSingleProperty)aParentProperty;
+                retVal = typeStrictlyConformsTo(aChildSingleProperty.getTypeDefinition().getType(), aParentSingleProperty.getTypeDefinition().getType());
+            } else if(aParentProperty instanceof PersistedBmmSinglePropertyOpen) {
+                if(aChildProperty instanceof  PersistedBmmSinglePropertyOpen) {
+                    //If both properties have the same name and are both open properties, then they do not conform.
+                    retVal = false;
+                } else if(aChildProperty instanceof PersistedBmmSingleProperty) {
+                    retVal = true;
+                    //TODO FIXME: proper type conformance to constraining generic type needs to be checked here
                 }
+            } else if(aChildProperty instanceof PersistedBmmContainerProperty && aParentProperty instanceof PersistedBmmContainerProperty) {
+                PersistedBmmContainerProperty aChildContainerProperty = (PersistedBmmContainerProperty)aChildProperty;
+                PersistedBmmContainerProperty aParentContainerProperty = (PersistedBmmContainerProperty)aParentProperty;
+                retVal = typeStrictlyConformsTo(aChildContainerProperty.getTypeDefinition().asTypeString(), aParentContainerProperty.getTypeDefinition().asTypeString());
+            } else if(aChildProperty instanceof PersistedBmmGenericProperty && aParentProperty instanceof PersistedBmmGenericProperty) {
+                PersistedBmmGenericProperty aChildGenericProperty = (PersistedBmmGenericProperty)aChildProperty;
+                PersistedBmmGenericProperty aParentGenericProperty = (PersistedBmmGenericProperty)aParentProperty;
+                retVal = typeStrictlyConformsTo(aChildGenericProperty.getTypeDefinition().asTypeString(), aParentGenericProperty.getTypeDefinition().asTypeString());
             }
         }
         return retVal;
@@ -450,7 +495,7 @@ public class BmmSchemaValidator extends AnyValidator {
         typeList2 = BmmDefinitions.typeNameAsFlatList(type2);
         boolean retVal = true;
         int index = 0;
-        while(index < typeList1.size() && index < typeList2.size() && retVal && schema.hasClassDefinition(typeList1.get(index)) && schema.hasClassDefinition(typeList2.get(index))) {
+        while(index < typeList1.size() && index < typeList2.size() && retVal && schema.hasClassOrPrimitiveDefinition(typeList1.get(index)) && schema.hasClassOrPrimitiveDefinition(typeList2.get(index))) {
             retVal = retVal
                         && typeList1.get(index).equalsIgnoreCase(typeList2.get(index))
                         || (ancestorsIndex.containsKey(typeList1.get(index).toUpperCase())
@@ -470,5 +515,86 @@ public class BmmSchemaValidator extends AnyValidator {
      */
     public boolean typeStrictlyConformsTo(String type1, String type2) {
         return !typeSameAs(type1,type2) && typeConformsTo(type1, type2);
+    }
+
+    /**
+     * do some basic validation post initial creation
+     * 1. check that package structure is regular:
+     *     a) only top-level packages can have qualified names
+     *     b) no top-level package name can be a direct parent or child of another
+     *     (child package must be declared under the parent)
+     * 2. check that all classes are mentioned in the package structure
+     * 3. check that all models refer to valid packages
+     * TODO Need to test this method
+     */
+    public void validateCreated() {
+        if(schema.getState() == PersistedBmmSchemaState.STATE_CREATED) {
+            List<String> packageNames = new ArrayList<>();
+
+            //check top-level names - package names cannot contain each other and be siblings
+            packageNames.addAll(schema.getPackages().keySet());
+            schema.getPackages().keySet().forEach(name1 -> {
+                boolean invalidSiblings = packageNames.stream().filter(name2 ->
+                    (!name1.equalsIgnoreCase(name2)) && (name1.startsWith(name2) || name2.startsWith(name1))
+                ).count() > 0;
+                if(invalidSiblings) {
+                    addError("ec_BMM_PKGTL", new ArrayList<String>() {{
+                        add(schema.getSchemaId());
+                    }});
+                }
+            });
+
+            //check no duplicate properties in any class
+            schema.doAllClasses(bmmClassSource -> {
+                List<String> propertyList = new ArrayList<>();
+                bmmClassSource.getProperties().keySet().forEach(property -> {
+                    if(propertyList.contains(property)) { //Maps eliminate duplicates so this should never occur unless Eiffel maps have different behaviors(??)
+                        addError("ec_BMM_PRDUP", new ArrayList<String>() {{
+                            add(schema.getSchemaId());
+                            add(bmmClassSource.getName());
+                            add(property);
+                        }});
+                    } else {
+                        propertyList.add(property);
+                    }
+                });
+            });
+
+            //validate package & class structure
+            schema.doRecursivePackages(persistedBmmPackage -> {
+                //check for lower-down qualified names
+                if((!schema.getPackages().containsKey(persistedBmmPackage.getName().toUpperCase())) && persistedBmmPackage.getName().indexOf(BmmDefinitions.PACKAGE_NAME_DELIMITER) >=0) {
+                    addError("ec_BMM_PKGQN", new ArrayList<String>(){{
+                        add(schema.getSchemaId());
+                        add(persistedBmmPackage.getName());
+                    }});
+                }
+                persistedBmmPackage.getClasses().forEach(persistedBmmClass -> {
+                    if(StringUtils.isEmpty(persistedBmmClass)) {
+                        addError("", new ArrayList<String>() {{
+                            add(schema.getSchemaId());
+                            add(persistedBmmPackage.getName());
+                        }});
+                    } else if(!schema.hasClassOrPrimitiveDefinition(persistedBmmClass)) {
+                        addError("", new ArrayList<String>() {{
+                            add(schema.getSchemaId());
+                            add(persistedBmmClass);
+                            add(persistedBmmPackage.getName());
+                        }});
+                    }
+                });
+            });
+
+            if(passed) {
+                addInfo("", new ArrayList<String>() {{
+                    add(schema.getSchemaId());
+                    add(""+schema.getPrimitives().size());
+                    add(""+schema.getClassDefinitions().size());
+                }});
+                schema.setState(PersistedBmmSchemaState.STATE_VALIDATED_CREATED);
+            }
+        } else {
+            throw new RuntimeException("Schema state is not created");
+        }
     }
 }

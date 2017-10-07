@@ -19,8 +19,8 @@ includes = <
         id = <"my_include.2.1.12">
     >
     ["2"] = <
-            id = <"your_include.1_1_11">
-        >
+        id = <"your_include.1_1_11">
+    >
 >
 
 packages = <

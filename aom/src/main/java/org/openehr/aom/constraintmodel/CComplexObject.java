@@ -20,6 +20,22 @@ public class CComplexObject extends CDefinedObject {
      */
     private List<CAttributeTuple> attributeTuples;
 
+// TODO For Joey
+// private rmTypeName;
+//
+//    public CComplexObject(String aReferenceTypeName, String anObjectId) {
+//        if(isValidObjectId(anObjectId)) {
+//
+//            OGObjectNode rep = null;
+//            setRmTypeName(aReferenceTypeName);
+//            rep = New OGObjectNode(anObjectId);
+//            rep.setContent (this);
+//            representationCache = rep;
+//        } else {
+//            throw new RuntimeException();
+//        }
+//    }
+
     /**
      * Returns list of constraints on attributes of the reference model type represented by this object.
      * @return

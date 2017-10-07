@@ -23,14 +23,12 @@ package org.openehr.bmm.persistence;
 
 import org.openehr.bmm.core.BmmClass;
 import org.openehr.bmm.core.BmmPackage;
-import org.openehr.bmm.rm_access.ReferenceModelAccess;
 import org.openehr.utils.common.CloneUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * Persisted form of a package as a tree structure whose nodes can contain more packages and/or classes.
@@ -195,6 +193,16 @@ public class PersistedBmmPackage extends PersistedBmmPackageContainer implements
         getPackages().forEach((key, bmmPackage) -> {
             bmmPackage.doRecursiveClasses(action);
         });
+    }
+
+    /**
+     * make this package with `packages' and `classes' references to those parts of `other_pkg'
+     * but keeping its own name.
+     * @param other
+     */
+    public void makeFromOther(PersistedBmmPackage other) {
+        classes = other.getClasses();
+        setPackages(other.getPackages());
     }
 
     public PersistedBmmPackage deepClone() {

@@ -82,7 +82,7 @@ public class BmmSchemaDeserializerTest {
     }
 
     public void testLocatable(PersistedBmmSchema model) {
-        PersistedBmmClass locatable = model.retrieveClassByName("LOCATABLE");
+        PersistedBmmClass locatable = model.getClassDefinition("LOCATABLE");
         assertNotNull(locatable);
         assertTrue(locatable.isAbstract());
         assertEquals("LOCATABLE", locatable.getName());
@@ -116,7 +116,7 @@ public class BmmSchemaDeserializerTest {
     }
 
     public void testIntervalValue(PersistedBmmSchema model) {
-        PersistedBmmClass intervalValue = model.retrieveClassByName("INTERVAL_VALUE");
+        PersistedBmmClass intervalValue = model.getClassDefinition("INTERVAL_VALUE");
         assertNotNull(intervalValue);
         assertFalse(intervalValue.isAbstract());
         assertEquals("INTERVAL_VALUE", intervalValue.getName());

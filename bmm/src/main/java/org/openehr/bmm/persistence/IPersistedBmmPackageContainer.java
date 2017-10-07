@@ -24,6 +24,7 @@ package org.openehr.bmm.persistence;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Created by cnanjo on 4/11/16.
@@ -34,4 +35,5 @@ public interface IPersistedBmmPackageContainer extends Serializable {
     public void setPackages(Map<String, PersistedBmmPackage> packages);
     public void setPackages(List<PersistedBmmPackage> packages);
     public void addPackage(PersistedBmmPackage aPackage);
+    public void doRecursivePackages(Consumer<PersistedBmmPackage> agent);
 }

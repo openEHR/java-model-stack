@@ -134,7 +134,7 @@ public class BmmDefinitions extends BasicDefinitions {
      * @return
      */
     public static boolean isValidMetadata(Map<String,String> aMetadata) {
-        return aMetadata.containsKey(METADATA_SCHEMA_NAME) && aMetadata.containsKey(METADATA_RM_RELEASE) && aMetadata.containsKey(METADATA_SCHEMA_PATH);
+        return aMetadata != null && !aMetadata.isEmpty() && aMetadata.containsKey(METADATA_SCHEMA_NAME) && aMetadata.containsKey(METADATA_RM_RELEASE) && aMetadata.containsKey(METADATA_SCHEMA_PATH);
     }
 
     /**

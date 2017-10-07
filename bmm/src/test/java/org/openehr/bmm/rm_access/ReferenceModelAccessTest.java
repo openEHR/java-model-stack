@@ -23,16 +23,15 @@ package org.openehr.bmm.rm_access;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openehr.bmm.persistence.deserializer.BmmSchemaDeserializer;
-import org.openehr.bmm.persistence.deserializer.BmmSchemaDeserializerTest;
-import org.openehr.odin.CompositeOdinObject;
-import org.openehr.odin.antlr.OdinVisitorImpl;
-import org.openehr.odin.loader.OdinLoaderImpl;
+import org.openehr.bmm.core.BmmModel;
+import org.openehr.bmm.rmaccess.ReferenceModelAccess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ReferenceModelAccessTest {
 
@@ -45,57 +44,15 @@ public class ReferenceModelAccessTest {
         path = path.substring(0, path.lastIndexOf('/'));
         schemaDirectories.add(path);
     }
-    @Test
-    public void getSchemaDirectories() throws Exception {
-
-    }
-
-    @Test
-    public void setSchemaDirectories() throws Exception {
-
-    }
-
-    @Test
-    public void getAllSchemas() throws Exception {
-
-    }
-
-    @Test
-    public void setAllSchemas() throws Exception {
-
-    }
 
     @Test
     public void getValidModels() throws Exception {
         ReferenceModelAccess access = new ReferenceModelAccess();
-        access.setSchemaDirectories(schemaDirectories);
-        access.initializeAll();
+        access.initializeAll(schemaDirectories);
+        Map<String, BmmModel> models = access.getValidModels();
+        assertTrue(access.getValidator().hasErrors());
+        assertFalse(access.getValidator().hasPassed());
         System.out.println("DONE");
-    }
-
-    @Test
-    public void setValidModels() throws Exception {
-
-    }
-
-    @Test
-    public void initializeWithLoadList() throws Exception {
-
-    }
-
-    @Test
-    public void initializeAll() throws Exception {
-
-    }
-
-    @Test
-    public void clearCache() throws Exception {
-
-    }
-
-    @Test
-    public void reloadSchemas() throws Exception {
-
     }
 
 }
