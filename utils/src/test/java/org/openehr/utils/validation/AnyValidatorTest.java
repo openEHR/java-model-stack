@@ -6,7 +6,6 @@ import org.openehr.utils.error.ErrorAccumulator;
 
 import java.util.ArrayList;
 
-import static com.sun.tools.internal.xjc.reader.Ring.add;
 import static org.junit.Assert.*;
 
 public class AnyValidatorTest {

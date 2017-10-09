@@ -2,7 +2,7 @@ package org.openehr.docgen;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openehr.bmm.rm_access.ReferenceModelAccess;
+import org.openehr.bmm.rmaccess.ReferenceModelAccess;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,8 +40,7 @@ public class DocumentGeneratorTest {
             path = path.substring(0, path.lastIndexOf('/'));
             schemaDirectories.add(path);
             access = new ReferenceModelAccess();
-            access.setSchemaDirectories(schemaDirectories);
-            access.initializeAll();
+            access.initializeAll(schemaDirectories);
         } catch(Exception e) {
             e.printStackTrace();
             fail("Error initializing test");
