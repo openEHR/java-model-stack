@@ -33,7 +33,7 @@ public class MessageLogger {
     /**
      * Error output of validator - things that must be corrected
      */
-    private List<MessageDescriptor> errorList = new ArrayList<>();
+    private List<MessageDescriptor> messageList = new ArrayList<>();
     private boolean hasErrors;
     private boolean hasWarnings;
     private boolean hasInfo;
@@ -45,8 +45,8 @@ public class MessageLogger {
      * @return
      */
     public MessageDescriptor lastAdded() {
-        if(errorList != null && errorList.size() > 0) {
-            return errorList.get(errorList.size() - 1);
+        if(messageList != null && messageList.size() > 0) {
+            return messageList.get(messageList.size() - 1);
         } else {
             return null;
         }
@@ -59,7 +59,7 @@ public class MessageLogger {
      */
     public List<String> getErrorCodes() {
         List<String> errorCodes = new ArrayList<>();
-        errorList.forEach(item -> {
+        messageList.forEach(item -> {
             if(item.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_ERROR)) {
                 errorCodes.add(item.getCode());
             }
@@ -74,7 +74,7 @@ public class MessageLogger {
      */
     public List<String> getWarningCodes() {
         List<String> warningCodes = new ArrayList<>();
-        errorList.forEach(item -> {
+        messageList.forEach(item -> {
             if(item.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_WARNING)) {
                 warningCodes.add(item.getCode());
             }
@@ -89,7 +89,7 @@ public class MessageLogger {
      */
     public List<String> getInfoCodes() {
         List<String> infoCodes = new ArrayList<>();
-        errorList.forEach(item -> {
+        messageList.forEach(item -> {
             if(item.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_INFO)) {
                 infoCodes.add(item.getCode());
             }
@@ -103,7 +103,7 @@ public class MessageLogger {
      * @return
      */
     public boolean isEmpty() {
-        return errorList.isEmpty();
+        return messageList.isEmpty();
     }
 
     /**
@@ -180,8 +180,8 @@ public class MessageLogger {
      */
     public boolean hasMatchingError(String aCode) {
         boolean retVal = false;
-        for(int index = 0; index < errorList.size(); index++) {
-            MessageDescriptor error = errorList.get(index);
+        for(int index = 0; index < messageList.size(); index++) {
+            MessageDescriptor error = messageList.get(index);
             if(error.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_ERROR) && error.getCode().startsWith(aCode)) {
                 retVal = true;
                 break;
@@ -198,8 +198,8 @@ public class MessageLogger {
      */
     public boolean hasMatchingWarning(String aCode) {
         boolean retVal = false;
-        for(int index = 0; index < errorList.size(); index++) {
-            MessageDescriptor error = errorList.get(index);
+        for(int index = 0; index < messageList.size(); index++) {
+            MessageDescriptor error = messageList.get(index);
             if(error.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_WARNING) && error.getCode().startsWith(aCode)) {
                 retVal = true;
                 break;
@@ -257,7 +257,7 @@ public class MessageLogger {
      * @param errorDescriptor
      */
     public void add(MessageDescriptor errorDescriptor) {
-        errorList.add(errorDescriptor);
+        messageList.add(errorDescriptor);
         hasErrors = hasErrors || errorDescriptor.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_ERROR);
         hasWarnings = hasWarnings || errorDescriptor.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_WARNING);
         hasInfo = hasInfo || errorDescriptor.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_INFO);
@@ -269,7 +269,7 @@ public class MessageLogger {
      * @param other
      */
     public void append(MessageLogger other) {
-        this.errorList.addAll(other.getErrorList());
+        this.messageList.addAll(other.getMessageList());
         hasErrors = hasErrors || other.hasErrors;
         hasWarnings = hasWarnings || other.hasWarnings;
         hasInfo = hasInfo || other.hasInfo;
@@ -280,14 +280,14 @@ public class MessageLogger {
      *
      */
     public void clear() {
-        errorList.clear();
+        messageList.clear();
         hasErrors = false;
         hasWarnings = false;
         hasInfo = false;
     }
 
-    public List<MessageDescriptor> getErrorList() {
-        return errorList;
+    public List<MessageDescriptor> getMessageList() {
+        return messageList;
     }
 
     /**
@@ -297,7 +297,7 @@ public class MessageLogger {
      */
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        errorList.forEach(error -> {
+        messageList.forEach(error -> {
             if(error.getSeverity() >= GlobalMessageLoggingLevel.getGlobalLoggingLevel()) {
                 builder.append(error.toString()).append("\n");
             }
@@ -315,7 +315,7 @@ public class MessageLogger {
      */
     public String toStringFiltered(boolean includeErrors, boolean includeWarnings, boolean includeInfo) {
         StringBuilder builder = new StringBuilder();
-        errorList.forEach(message -> {
+        messageList.forEach(message -> {
             if(includeErrors && message.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_ERROR)) {
                 builder.append(message.toString()).append("\n");
             } else if(includeWarnings && message.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_WARNING)) {
@@ -333,6 +333,6 @@ public class MessageLogger {
      * @return
      */
     public int size() {
-        return errorList.size();
+        return messageList.size();
     }
 }

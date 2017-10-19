@@ -445,7 +445,7 @@ public class ReferenceModelAccess {
             allSchemas.forEach((aSchemaId, aSchemaDescriptor) -> {
                 if (aSchemaDescriptor.getSchemaValidator().hasPassed()) {
                     loadSchemaIncludeClosure(aSchemaId);
-                    if (aSchemaDescriptor.getSchemaValidator().getErrorCache().hasWarnings()) {
+                    if (aSchemaDescriptor.getSchemaValidator().getMessageLogger().hasWarnings()) {
                         validator.addWarning(BmmMessageIds.ec_bmm_schema_passed_with_warnings, new ArrayList<String>() {{
                             add(aSchemaId);
                             add(aSchemaDescriptor.getSchemaValidator().getErrorStrings());
@@ -543,7 +543,7 @@ public class ReferenceModelAccess {
                                 topLevelSchema = aSchemaDescriptor.getSchema();
                             }
                             validModels.put(aSchemaDescriptor.getSchemaId(), topLevelSchema);
-                            if(aSchemaDescriptor.getSchemaValidator().getErrorCache().hasWarnings()) {
+                            if(aSchemaDescriptor.getSchemaValidator().getMessageLogger().hasWarnings()) {
                                 validator.addWarning(BmmMessageIds.ec_bmm_schema_passed_with_warnings, new ArrayList<String>() {{
                                     add(aSchemaDescriptor.getSchemaId());
                                     add(aSchemaDescriptor.getSchemaValidator().getErrorStrings());
@@ -714,10 +714,10 @@ public class ReferenceModelAccess {
                             add(includedSchemaId);
                         }});
                     }
-                } else if(!includedSchemaDescriptor.getSchemaValidator().hasPassed() || includedSchemaDescriptor.getSchemaValidator().getErrorCache().hasWarnings()) {
+                } else if(!includedSchemaDescriptor.getSchemaValidator().hasPassed() || includedSchemaDescriptor.getSchemaValidator().getMessageLogger().hasWarnings()) {
                     for(String include:includingSchemaIds) {
                         SchemaDescriptor clientSchemaDescriptor = allSchemas.get(include);
-                        if(!clientSchemaDescriptor.getSchemaValidator().hasPassed() && clientSchemaDescriptor.getSchemaValidator().getErrorCache().hasWarnings()) {
+                        if(!clientSchemaDescriptor.getSchemaValidator().hasPassed() && clientSchemaDescriptor.getSchemaValidator().getMessageLogger().hasWarnings()) {
                             if(!includedSchemaDescriptor.getSchemaValidator().hasPassed()) {
                                 clientSchemaDescriptor.getSchemaValidator().addError(BmmMessageIds.ec_BMM_INCERR, new ArrayList<String>() {{
                                     add(include);

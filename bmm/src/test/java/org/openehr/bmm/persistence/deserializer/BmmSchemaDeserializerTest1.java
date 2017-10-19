@@ -51,7 +51,7 @@ public class BmmSchemaDeserializerTest1 {
         persistedBmmSchema = deserializer.deserialize(root);
         persistedBmmSchema.loadFinalize();
         persistedBmmSchema.validate();
-        MessageLogger errorCache = persistedBmmSchema.getBmmSchemaValidator().getErrorCache();
+        MessageLogger errorCache = persistedBmmSchema.getBmmSchemaValidator().getMessageLogger();
         System.out.println(errorCache);
     }
 

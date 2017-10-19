@@ -55,7 +55,7 @@ public class MessageDatabase {
      *
      * @return
      */
-    protected Map<String, String> getMessageTable() {
+    public Map<String, String> getMessageTable() {
         return messageTable;
     }
 
@@ -64,7 +64,7 @@ public class MessageDatabase {
      *
      * @param messageTable
      */
-    protected void setMessageTable(Map<String, String> messageTable) {
+    public void setMessageTable(Map<String, String> messageTable) {
         this.messageTable = messageTable;
     }
 
@@ -109,7 +109,9 @@ public class MessageDatabase {
         if(messageTable.containsKey(aMessageTemplateId)) {
             //Obtain an error message for the code `an_id'
             messageTemplate = messageTable.get(aMessageTemplateId);
-            argumentList.addAll(aMessageArguments);
+            if(aMessageArguments != null) {
+                argumentList.addAll(aMessageArguments);
+            }
         } else if(messageTable.containsKey ("message_code_error")){
             //Failing that, try to get an error message whose key is "message_code_error", which should
             //be a message that looks like "Error code $1 does not exist (calling context = $2.$3)"

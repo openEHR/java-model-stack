@@ -2,6 +2,7 @@ package org.openehr.utils.validation;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openehr.utils.message.MessageDatabaseManager;
 import org.openehr.utils.message.MessageLogger;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class AnyValidatorTest {
     @Before
     public void setup() {
         validator = new BasicValidator();
+        MessageDatabaseManager.getInstance().getMessageDatabase().getMessageTable().put("ErrorKey", "Error is {0}");
     }
 
     @Test
@@ -27,6 +29,7 @@ public class AnyValidatorTest {
         assertTrue(validator.hasPassed());
         validator.validate();
         assertFalse(validator.hasPassed());
+        validator.getMessageLogger().getMessageList();
     }
 
     @Test
@@ -40,8 +43,8 @@ public class AnyValidatorTest {
 
     @Test
     public void getErrorCache() throws Exception {
-        assertNotNull(validator.getErrorCache());
-        assertTrue(validator.getErrorCache() instanceof MessageLogger);
+        assertNotNull(validator.getMessageLogger());
+        assertTrue(validator.getMessageLogger() instanceof MessageLogger);
     }
 
     @Test
@@ -58,7 +61,7 @@ public class AnyValidatorTest {
         assertFalse(validator.hasPassed());
         validator.reset();
         assertTrue(validator.hasPassed());
-        assertEquals(0,validator.getErrorCache().getErrorList().size());
+        assertEquals(0,validator.getMessageLogger().getMessageList().size());
     }
 
     @Test

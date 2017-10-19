@@ -145,31 +145,31 @@ public class ErrorAccumulatorTest {
     @Test
     public void addError() throws Exception {
         errorAccumulator.addError("code2", null, null);
-        assertEquals(1, errorAccumulator.getErrorList().size());
+        assertEquals(1, errorAccumulator.getMessageList().size());
     }
 
     @Test
     public void addWarning() throws Exception {
         errorAccumulator.addWarning("code1", null, null);
-        assertEquals(1, errorAccumulator.getErrorList().size());
+        assertEquals(1, errorAccumulator.getMessageList().size());
     }
 
     @Test
     public void addInfo() throws Exception {
         errorAccumulator.addInfo("code0", null, null);
-        assertEquals(1, errorAccumulator.getErrorList().size());
+        assertEquals(1, errorAccumulator.getMessageList().size());
     }
 
     @Test
     public void addDebug() throws Exception {
         errorAccumulator.addDebug("code0", null);
-        assertEquals(1, errorAccumulator.getErrorList().size());
+        assertEquals(1, errorAccumulator.getMessageList().size());
     }
 
     @Test
     public void add() throws Exception {
         errorAccumulator.add(new MessageDescriptor("code0", 0, null, null));
-        assertEquals(1, errorAccumulator.getErrorList().size());
+        assertEquals(1, errorAccumulator.getMessageList().size());
     }
 
     @Test
@@ -187,8 +187,8 @@ public class ErrorAccumulatorTest {
 
         one.append(two);
 
-        assertEquals(6, one.getErrorList().size());
-        assertEquals(3, two.getErrorList().size());
+        assertEquals(6, one.getMessageList().size());
+        assertEquals(3, two.getMessageList().size());
 
         assertEquals(2, one.getErrorCodes().size());
         assertEquals(2, one.getWarningCodes().size());
@@ -197,16 +197,16 @@ public class ErrorAccumulatorTest {
 
     @Test
     public void clear() throws Exception {
-        assertEquals(errorAccumulator.getErrorList().size(), 0);
+        assertEquals(errorAccumulator.getMessageList().size(), 0);
         errorAccumulator.addInfo("code0", null, null);
         errorAccumulator.addWarning("code1", null, null);
         errorAccumulator.addError("code2", null, null);
-        assertEquals(errorAccumulator.getErrorList().size(), 3);
+        assertEquals(errorAccumulator.getMessageList().size(), 3);
         assertTrue(errorAccumulator.hasErrors());
         assertTrue(errorAccumulator.hasWarnings());
         assertTrue(errorAccumulator.hasInfo());
         errorAccumulator.clear();
-        assertEquals(errorAccumulator.getErrorList().size(), 0);
+        assertEquals(errorAccumulator.getMessageList().size(), 0);
         assertFalse(errorAccumulator.hasErrors());
         assertFalse(errorAccumulator.hasWarnings());
         assertFalse(errorAccumulator.hasInfo());
@@ -218,7 +218,7 @@ public class ErrorAccumulatorTest {
         errorAccumulator.addWarning("code1", null, null);
         errorAccumulator.addError("code2", null, null);
 
-        assertEquals(3, errorAccumulator.getErrorList().size());
+        assertEquals(3, errorAccumulator.getMessageList().size());
     }
 
     @Test
