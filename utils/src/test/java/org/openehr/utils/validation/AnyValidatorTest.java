@@ -29,7 +29,7 @@ public class AnyValidatorTest {
         assertTrue(validator.hasPassed());
         validator.validate();
         assertFalse(validator.hasPassed());
-        validator.getMessageLogger().getMessageList();
+        assertEquals(1, validator.getMessageLogger().getMessageList().size());
     }
 
     @Test
