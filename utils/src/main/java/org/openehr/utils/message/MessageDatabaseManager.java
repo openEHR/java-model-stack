@@ -1,4 +1,4 @@
-package org.openehr.utils.validation;
+package org.openehr.utils.message;
 
 /*
  * #%L
@@ -42,6 +42,6 @@ public class MessageDatabaseManager {
     }
 
     public String getText(String anId) {
-        return messageDb.createMessageText(anId);
+        return messageDb.returnMessageTemplateText(anId);
     }
 }

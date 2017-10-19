@@ -59,6 +59,12 @@
             <artifactId>adl-common-utils</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!-- Spring framework -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.0.0.RELEASE</version>
+        </dependency>
             <!-- test -->
         <dependency>
             <groupId>org.spockframework</groupId>

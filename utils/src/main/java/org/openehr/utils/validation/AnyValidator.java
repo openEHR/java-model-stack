@@ -20,10 +20,8 @@
  */
 package org.openehr.utils.validation;
 
-import org.openehr.utils.error.ErrorAccumulator;
-import org.openehr.utils.error.ErrorDescriptor;
+import org.openehr.utils.message.MessageLogger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +36,7 @@ public abstract class AnyValidator {
     /**
      * Error output of validator - things that must be corrected
      */
-    private ErrorAccumulator errorCache = new ErrorAccumulator();
+    private MessageLogger errorCache = new MessageLogger();
 
     /**
      * Flag indicating that all validation passed. This flag is set to true in two cases:
@@ -61,15 +59,15 @@ public abstract class AnyValidator {
     }
 
     /**
-     * Returns the ErrorAccumulator for this validator
+     * Returns the MessageLogger for this validator
      *
      * @return
      */
-    public ErrorAccumulator getErrorCache() {
+    public MessageLogger getErrorCache() {
         if(errorCache != null) {
             return errorCache;
         } else {
-            errorCache = new ErrorAccumulator();
+            errorCache = new MessageLogger();
             return errorCache;
         }
     }
@@ -87,7 +85,7 @@ public abstract class AnyValidator {
      */
     public void reset() {
         passed = true;
-        errorCache = new ErrorAccumulator();
+        errorCache = new MessageLogger();
     }
 
     /**
@@ -141,7 +139,7 @@ public abstract class AnyValidator {
      *
      * @param other
      */
-    public void mergeErrors(ErrorAccumulator other) {
+    public void mergeErrors(MessageLogger other) {
         errorCache.append(other);
         passed = passed && !(other.hasErrors());
     }

@@ -2,7 +2,7 @@ package org.openehr.utils.validation;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openehr.utils.error.ErrorAccumulator;
+import org.openehr.utils.message.MessageLogger;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class AnyValidatorTest {
     @Test
     public void hasPassed2() throws Exception {
         assertTrue(validator.hasPassed());
-        ErrorAccumulator other = new ErrorAccumulator();
+        MessageLogger other = new MessageLogger();
         other.addError("ErrorKey", null, null);
         validator.mergeErrors(other);
         assertFalse(validator.hasPassed());
@@ -41,7 +41,7 @@ public class AnyValidatorTest {
     @Test
     public void getErrorCache() throws Exception {
         assertNotNull(validator.getErrorCache());
-        assertTrue(validator.getErrorCache() instanceof ErrorAccumulator);
+        assertTrue(validator.getErrorCache() instanceof MessageLogger);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class AnyValidatorTest {
         validator.addError("ErrorKey", new ArrayList<String>() {{
             add("argument 1");
         }});
-        ErrorAccumulator other = new ErrorAccumulator();
+        MessageLogger other = new MessageLogger();
         other.addError("ErrorKey", new ArrayList<String>() {{
             add("argument 1");
         }}, null);

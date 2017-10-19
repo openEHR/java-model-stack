@@ -2,6 +2,8 @@ package org.openehr.utils.error;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openehr.utils.message.MessageDescriptor;
+import org.openehr.utils.message.MessageLogger;
 
 import java.util.List;
 
@@ -9,11 +11,11 @@ import static org.junit.Assert.*;
 
 public class ErrorAccumulatorTest {
 
-    private ErrorAccumulator errorAccumulator;
+    private MessageLogger errorAccumulator;
 
     @Before
     public void setup() {
-        errorAccumulator = new ErrorAccumulator();
+        errorAccumulator = new MessageLogger();
     }
 
     @Test
@@ -166,14 +168,14 @@ public class ErrorAccumulatorTest {
 
     @Test
     public void add() throws Exception {
-        errorAccumulator.add(new ErrorDescriptor("code0", 0, null, null));
+        errorAccumulator.add(new MessageDescriptor("code0", 0, null, null));
         assertEquals(1, errorAccumulator.getErrorList().size());
     }
 
     @Test
     public void append() throws Exception {
-        ErrorAccumulator one = new ErrorAccumulator();
-        ErrorAccumulator two = new ErrorAccumulator();
+        MessageLogger one = new MessageLogger();
+        MessageLogger two = new MessageLogger();
 
         one.addInfo("code0", null, null);
         one.addWarning("code1", null, null);

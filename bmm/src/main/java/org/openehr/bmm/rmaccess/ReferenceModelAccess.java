@@ -29,9 +29,7 @@ import org.openehr.bmm.persistence.PersistedBmmSchema;
 import org.openehr.bmm.persistence.PersistedBmmSchemaState;
 import org.openehr.bmm.persistence.validation.BmmDefinitions;
 import org.openehr.bmm.persistence.validation.BmmMessageIds;
-import org.openehr.utils.datatype.DataType;
-import org.openehr.utils.error.ErrorAccumulator;
-import org.openehr.utils.file.FileAndDirUtils;
+import org.openehr.utils.message.MessageLogger;
 import org.openehr.utils.validation.BasicValidator;
 
 import java.io.File;
@@ -671,7 +669,7 @@ public class ReferenceModelAccess {
      * @param aSchemaDescriptor
      */
     public void mergeValidationErrors(SchemaDescriptor aSchemaDescriptor) {
-        Map<String, ErrorAccumulator> errorTable = null;
+        Map<String, MessageLogger> errorTable = null;
         Boolean errorsToPropagate = true;
         //SchemaDescriptor targetSchemaDescriptor, clientSchemaDescriptor = null;
         if(aSchemaDescriptor.getPersistentSchema() != null) {

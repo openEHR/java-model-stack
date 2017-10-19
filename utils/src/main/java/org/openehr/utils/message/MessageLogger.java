@@ -18,10 +18,7 @@
  * #L%
  * Author: Claude Nanjo
  */
-package org.openehr.utils.error;
-
-import org.openehr.utils.validation.GlobalErrorReportingLevel;
-import org.openehr.utils.validation.MessageDatabaseManager;
+package org.openehr.utils.message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +28,12 @@ import java.util.List;
  * the validation of an OpenEHR model load and configuration.
  *
  */
-public class ErrorAccumulator {
+public class MessageLogger {
 
     /**
      * Error output of validator - things that must be corrected
      */
-    private List<ErrorDescriptor> errorList = new ArrayList<>();
+    private List<MessageDescriptor> errorList = new ArrayList<>();
     private boolean hasErrors;
     private boolean hasWarnings;
     private boolean hasInfo;
@@ -47,7 +44,7 @@ public class ErrorAccumulator {
      *
      * @return
      */
-    public ErrorDescriptor lastAdded() {
+    public MessageDescriptor lastAdded() {
         if(errorList != null && errorList.size() > 0) {
             return errorList.get(errorList.size() - 1);
         } else {
@@ -63,7 +60,7 @@ public class ErrorAccumulator {
     public List<String> getErrorCodes() {
         List<String> errorCodes = new ArrayList<>();
         errorList.forEach(item -> {
-            if(item.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_ERROR)) {
+            if(item.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_ERROR)) {
                 errorCodes.add(item.getCode());
             }
         });
@@ -78,7 +75,7 @@ public class ErrorAccumulator {
     public List<String> getWarningCodes() {
         List<String> warningCodes = new ArrayList<>();
         errorList.forEach(item -> {
-            if(item.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_WARNING)) {
+            if(item.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_WARNING)) {
                 warningCodes.add(item.getCode());
             }
         });
@@ -93,7 +90,7 @@ public class ErrorAccumulator {
     public List<String> getInfoCodes() {
         List<String> infoCodes = new ArrayList<>();
         errorList.forEach(item -> {
-            if(item.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_INFO)) {
+            if(item.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_INFO)) {
                 infoCodes.add(item.getCode());
             }
         });
@@ -184,8 +181,8 @@ public class ErrorAccumulator {
     public boolean hasMatchingError(String aCode) {
         boolean retVal = false;
         for(int index = 0; index < errorList.size(); index++) {
-            ErrorDescriptor error = errorList.get(index);
-            if(error.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_ERROR) && error.getCode().startsWith(aCode)) {
+            MessageDescriptor error = errorList.get(index);
+            if(error.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_ERROR) && error.getCode().startsWith(aCode)) {
                 retVal = true;
                 break;
             }
@@ -202,8 +199,8 @@ public class ErrorAccumulator {
     public boolean hasMatchingWarning(String aCode) {
         boolean retVal = false;
         for(int index = 0; index < errorList.size(); index++) {
-            ErrorDescriptor error = errorList.get(index);
-            if(error.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_WARNING) && error.getCode().startsWith(aCode)) {
+            MessageDescriptor error = errorList.get(index);
+            if(error.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_WARNING) && error.getCode().startsWith(aCode)) {
                 retVal = true;
                 break;
             }
@@ -219,7 +216,7 @@ public class ErrorAccumulator {
      * @param aLocation
      */
     public void addError(String aCode, List<String> args, String aLocation) {
-        add(new ErrorDescriptor(aCode, ErrorSeverityTypes.ERROR_TYPE_ERROR, messageDatabaseManager.getMessage(aCode, args), aLocation));
+        add(new MessageDescriptor(aCode, MessageSeverityTypes.ERROR_TYPE_ERROR, messageDatabaseManager.getMessage(aCode, args), aLocation));
     }
 
     /**
@@ -230,7 +227,7 @@ public class ErrorAccumulator {
      * @param aLocation
      */
     public void addWarning(String aCode, List<String> args, String aLocation) {
-        add(new ErrorDescriptor(aCode, ErrorSeverityTypes.ERROR_TYPE_WARNING, messageDatabaseManager.getMessage(aCode, args), aLocation));
+        add(new MessageDescriptor(aCode, MessageSeverityTypes.ERROR_TYPE_WARNING, messageDatabaseManager.getMessage(aCode, args), aLocation));
     }
 
     /**
@@ -241,7 +238,7 @@ public class ErrorAccumulator {
      * @param aLocation
      */
     public void addInfo(String aCode, List<String> args, String aLocation) {
-        add(new ErrorDescriptor(aCode, ErrorSeverityTypes.ERROR_TYPE_INFO, messageDatabaseManager.getMessage(aCode, args), aLocation));
+        add(new MessageDescriptor(aCode, MessageSeverityTypes.ERROR_TYPE_INFO, messageDatabaseManager.getMessage(aCode, args), aLocation));
     }
 
     /**
@@ -251,7 +248,7 @@ public class ErrorAccumulator {
      * @param aLocation
      */
     public void addDebug(String aMessage, String aLocation) {
-        add(new ErrorDescriptor("", ErrorSeverityTypes.ERROR_TYPE_DEBUG, aMessage, aLocation));
+        add(new MessageDescriptor("", MessageSeverityTypes.ERROR_TYPE_DEBUG, aMessage, aLocation));
     }
 
     /**
@@ -259,11 +256,11 @@ public class ErrorAccumulator {
      *
      * @param errorDescriptor
      */
-    public void add(ErrorDescriptor errorDescriptor) {
+    public void add(MessageDescriptor errorDescriptor) {
         errorList.add(errorDescriptor);
-        hasErrors = hasErrors || errorDescriptor.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_ERROR);
-        hasWarnings = hasWarnings || errorDescriptor.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_WARNING);
-        hasInfo = hasInfo || errorDescriptor.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_INFO);
+        hasErrors = hasErrors || errorDescriptor.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_ERROR);
+        hasWarnings = hasWarnings || errorDescriptor.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_WARNING);
+        hasInfo = hasInfo || errorDescriptor.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_INFO);
     }
 
     /**
@@ -271,7 +268,7 @@ public class ErrorAccumulator {
      *
      * @param other
      */
-    public void append(ErrorAccumulator other) {
+    public void append(MessageLogger other) {
         this.errorList.addAll(other.getErrorList());
         hasErrors = hasErrors || other.hasErrors;
         hasWarnings = hasWarnings || other.hasWarnings;
@@ -289,7 +286,7 @@ public class ErrorAccumulator {
         hasInfo = false;
     }
 
-    public List<ErrorDescriptor> getErrorList() {
+    public List<MessageDescriptor> getErrorList() {
         return errorList;
     }
 
@@ -301,7 +298,7 @@ public class ErrorAccumulator {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         errorList.forEach(error -> {
-            if(error.getSeverity() >= GlobalErrorReportingLevel.getGlobalErrorReportingLevel()) {
+            if(error.getSeverity() >= GlobalMessageLoggingLevel.getGlobalLoggingLevel()) {
                 builder.append(error.toString()).append("\n");
             }
         });
@@ -319,11 +316,11 @@ public class ErrorAccumulator {
     public String toStringFiltered(boolean includeErrors, boolean includeWarnings, boolean includeInfo) {
         StringBuilder builder = new StringBuilder();
         errorList.forEach(message -> {
-            if(includeErrors && message.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_ERROR)) {
+            if(includeErrors && message.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_ERROR)) {
                 builder.append(message.toString()).append("\n");
-            } else if(includeWarnings && message.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_WARNING)) {
+            } else if(includeWarnings && message.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_WARNING)) {
                 builder.append(message.toString()).append("\n");
-            } else if(includeInfo && message.getSeverity().equals(ErrorSeverityTypes.ERROR_TYPE_INFO)) {
+            } else if(includeInfo && message.getSeverity().equals(MessageSeverityTypes.ERROR_TYPE_INFO)) {
                 builder.append(message.toString()).append("\n");
             }
         });
