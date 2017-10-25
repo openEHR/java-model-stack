@@ -7,7 +7,6 @@ import org.openehr.utils.message.MessageLogger;
 
 import java.util.ArrayList;
 
-import static com.sun.tools.internal.xjc.reader.Ring.add;
 import static org.junit.Assert.*;
 
 public class AnyValidatorTest {
